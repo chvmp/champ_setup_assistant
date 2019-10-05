@@ -1,0 +1,12 @@
+<package format="2">
+    <name>champ_setup_assistant</name>
+    <version>0.0.1</version>
+    <description>Champ Robot Converter Package</description>
+
+    <license>BSD-3</license>
+
+    <author email="jimenojmm@gmail.com">Juan Jimeno</author>
+    <maintainer email="jimenojmm@gmail.com.com">Juan Jimeno</maintainer>
+
+    <buildtool_depend>catkin</buildtool_depend>
+</package>

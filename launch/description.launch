@@ -1,0 +1,5 @@
+<launch>
+    <arg name="description_file"         default="$(env CHAMP_SETUP_ASSISTANT_URDF)"/>
+
+    <param name="robot_description" textfile="$(arg description_file)"/>
+</launch>

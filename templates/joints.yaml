@@ -1,0 +1,19 @@
+left_front:
+  - {{ left_front[0] }}
+  - {{ left_front[1] }}
+  - {{ left_front[2] }}
+
+right_front:
+  - {{ right_front[0] }}
+  - {{ right_front[1] }}
+  - {{ right_front[2] }}
+
+left_hind:
+  - {{ left_hind[0] }}
+  - {{ left_hind[1] }}
+  - {{ left_hind[2] }}
+
+right_hind:
+  - {{ right_hind[0] }}
+  - {{ right_hind[1] }}
+  - {{ right_hind[2] }}
