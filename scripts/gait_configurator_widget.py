@@ -36,7 +36,7 @@ class GaitConfiguratorWidget(QWidget):
 
         self.linear_linear_vel_y_label =  QLabel("\tMax Linear Velocity, Y Axis (m/s)")
         self.linear_linear_vel_y_edit = QDoubleSpinBox()
-        self.linear_linear_vel_y_edit.setValue(0.35)
+        self.linear_linear_vel_y_edit.setValue(0.25)
         self.linear_linear_vel_y_edit.setFixedWidth(200)
         self.linear_linear_vel_y_edit.setSingleStep(0.01)
         self.row.addRow(self.linear_linear_vel_y_label, self.linear_linear_vel_y_edit)
