@@ -1,3 +1,3 @@
 <launch>
-    <node name="champ_setup_assistant" pkg="champ_converter" type="rviz_test.py" output="screen"/>
+    <node name="champ_setup_assistant" pkg="champ_setup_assistant" type="setup_assistant.py" output="screen"/>
 </launch>
