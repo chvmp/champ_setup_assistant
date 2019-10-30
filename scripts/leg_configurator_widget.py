@@ -83,7 +83,7 @@ class AddDeleteButtonWidget(QWidget):
 
         self.setLayout(self.buttons)
 
-class LegSubConfigurator(QWidget):
+class JointConfigurator(QWidget):
     def __init__(self, parent, label):
 
         super(QWidget, self).__init__()
@@ -114,18 +114,21 @@ class LegSubConfigurator(QWidget):
         self.x_edit = QDoubleSpinBox()
         self.x_edit.setSingleStep(0.001)
         self.x_edit.setRange(-100,100)
+        self.x_edit.setDecimals(3)
 
         self.y_label = QLabel("y :")
         self.y_label.setAlignment(Qt.AlignCenter)
         self.y_edit = QDoubleSpinBox()
         self.y_edit.setSingleStep(0.001)
         self.y_edit.setRange(-100,100)
+        self.y_edit.setDecimals(3)
 
         self.z_label = QLabel("z :")
         self.z_label.setAlignment(Qt.AlignCenter)
         self.z_edit = QDoubleSpinBox()
         self.z_edit.setSingleStep(0.001)
         self.z_edit.setRange(-100,100)
+        self.z_edit.setDecimals(3)
 
         self.layout.addWidget(self.link_label, 0, 1)
         self.layout.addWidget(self.buttons_widget, 1, 0)
@@ -200,13 +203,13 @@ class LegConfigurator(QWidget):
 
         self.tab_label.setFont(QFont("Default", pointSize=12 ,weight=QFont.Bold))
         self.tab_label.setAlignment(Qt.AlignCenter)
-        self.hip_link = LegSubConfigurator(parent, "HIP")
+        self.hip_link = JointConfigurator(parent, "HIP")
         self.column.addWidget(self.hip_link)
-        self.upper_leg_link = LegSubConfigurator(parent, "UPPER LEG")
+        self.upper_leg_link = JointConfigurator(parent, "UPPER LEG")
         self.column.addWidget(self.upper_leg_link)
-        self.lower_leg_link = LegSubConfigurator(parent, "LOWER LEG")
+        self.lower_leg_link = JointConfigurator(parent, "LOWER LEG")
         self.column.addWidget(self.lower_leg_link)
-        self.foot_link = LegSubConfigurator(parent, "FOOT")
+        self.foot_link = JointConfigurator(parent, "FOOT")
         self.column.addWidget(self.foot_link)
 
         self.row.addWidget(self.tab_label)
