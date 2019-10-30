@@ -176,8 +176,14 @@ class CodeGenWidget(QWidget):
         gait_configuration = self.gait_configurator.get_configuration()
 
         if leg_configuration != None:
+            if self.leg_configurator.using_urdf:
+                self.config["urdf_path"] = self.robot.path
+            else:
+                leg_configuration["links"]["base"] = "base_link"
+                #TODO add correct generated urdf path
+                self.config["urdf_path"] = "test"
+                
             self.config["robot_name"] = self.robot_name
-            self.config["urdf_path"] = self.robot.path
             self.config["links"] = leg_configuration["links"]
             self.config["joints"] = leg_configuration["joints"]
             self.config["firmware"]["transforms"] = leg_configuration["firmware"]["transforms"]

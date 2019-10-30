@@ -85,7 +85,6 @@ class AddDeleteButtonWidget(QWidget):
 
 class JointConfigurator(QWidget):
     def __init__(self, parent, label):
-
         super(QWidget, self).__init__()
         self.parent = parent
 
@@ -174,7 +173,6 @@ class JointConfigurator(QWidget):
         else:
             QMessageBox.information(self, "WARN", "Leg part is empty")
 
-
     def delete_button_clicked(self):
         link_name = self.leg_links_list.highlighted_link()
         if len(link_name):
@@ -187,10 +185,12 @@ class LegConfigurator(QWidget):
         super(QWidget, self).__init__()
         self.parent = parent
         
+        self.leg_name = leg_name
+
         self.column = QHBoxLayout()
         self.row = QVBoxLayout()
 
-        self.tab_label = QLabel("\t%s LEG CONFIGURATION\n" % leg_name)
+        self.tab_label = QLabel("\t%s LEG CONFIGURATION\n" % self.leg_name)
 
         instruction_text =("        Add all links related to the leg's part.\n\
         \n\
@@ -203,14 +203,14 @@ class LegConfigurator(QWidget):
 
         self.tab_label.setFont(QFont("Default", pointSize=12 ,weight=QFont.Bold))
         self.tab_label.setAlignment(Qt.AlignCenter)
-        self.hip_link = JointConfigurator(parent, "HIP")
-        self.column.addWidget(self.hip_link)
-        self.upper_leg_link = JointConfigurator(parent, "UPPER LEG")
-        self.column.addWidget(self.upper_leg_link)
-        self.lower_leg_link = JointConfigurator(parent, "LOWER LEG")
-        self.column.addWidget(self.lower_leg_link)
-        self.foot_link = JointConfigurator(parent, "FOOT")
-        self.column.addWidget(self.foot_link)
+        self.hip_joint = JointConfigurator(parent, "HIP")
+        self.column.addWidget(self.hip_joint)
+        self.upper_leg_joint = JointConfigurator(parent, "UPPER LEG")
+        self.column.addWidget(self.upper_leg_joint)
+        self.lower_leg_joint = JointConfigurator(parent, "LOWER LEG")
+        self.column.addWidget(self.lower_leg_joint)
+        self.foot_joint = JointConfigurator(parent, "FOOT")
+        self.column.addWidget(self.foot_joint)
 
         self.row.addWidget(self.tab_label)
         self.row.addWidget(self.instructions)
@@ -218,35 +218,59 @@ class LegConfigurator(QWidget):
 
         self.setLayout(self.row)
 
+    def get_prefix(self):
+        leg_names = ["LEFT FRONT", "RIGHT FRONT", "LEFT HIND", "RIGHT HIND"]
+        leg_prefixes = ["lf", "rf", "lh", "rh"]
+        return leg_prefixes[leg_names.index(self.leg_name)]
+
     def get_leg_links(self):
-        try:
-            if self.parent.using_urdf:
-                hip = self.hip_link.leg_links_list.item(0).text()
-                upper_leg = self.upper_leg_link.leg_links_list.item(0).text()
-                lower_leg = self.lower_leg_link.leg_links_list.item(0).text()
-                foot = self.foot_link.leg_links_list.item(0).text()
-            
-            else:
-                hip = "a"
-                upper_leg = "b"
-                lower_leg = "c"
-                foot = "d"
+        leg_prefix = self.get_prefix()
 
-            return [str(hip), str(upper_leg), str(lower_leg), str(foot)]
+        hip = leg_prefix + "_hip_link"
+        upper_leg = leg_prefix + "_upper_leg_link"
+        lower_leg = leg_prefix + "_lower_leg_link"
+        foot = leg_prefix + "_foot_link"
 
-        except:
-            return [None, None, None, None] 
+        if self.parent.using_urdf:
+            hip = str(self.hip_joint.leg_links_list.item(0).text())
+            upper_leg = str(self.upper_leg_joint.leg_links_list.item(0).text())
+            lower_leg = str(self.lower_leg_joint.leg_links_list.item(0).text())
+            foot = str(self.foot_joint.leg_links_list.item(0).text())
+
+        
+        return [hip, upper_leg, lower_leg, foot]
 
     def get_leg_joints(self):
+        leg_prefix = self.get_prefix()
         links = self.get_leg_links()
-        joints = []
 
-        for i in range(3):
-            joints.append(self.parent.rviz_widget.robot.get_attached_joint(links[i]))
-
-        return joints
+        hip = leg_prefix + "_hip_joint"
+        upper_leg = leg_prefix + "_upper_leg_joint"
+        lower_leg = leg_prefix + "_lower_leg_joint"
+      
+        if self.parent.using_urdf:
+            hip = self.parent.rviz_widget.robot.get_attached_joint(links[0])
+            upper_leg = self.parent.rviz_widget.robot.get_attached_joint(links[1])
+            lower_leg = self.parent.rviz_widget.robot.get_attached_joint(links[2])
+           
+        return [hip, upper_leg, lower_leg]
 
     def get_transform(self):
+        if self.parent.using_urdf:
+            return self.get_transform_from_urdf()
+        else:
+            return self.get_transform_from_box()
+
+    def get_transform_from_box(self):
+        transform = [0,0,0,0]
+        transform[0] = [self.hip_joint.x_edit.value(), self.hip_joint.y_edit.value(), self.hip_joint.z_edit.value(), 0, 0, 0] 
+        transform[1] = [self.upper_leg_joint.x_edit.value(), self.upper_leg_joint.y_edit.value(), self.upper_leg_joint.z_edit.value(), 0, 0, 0] 
+        transform[2] = [self.lower_leg_joint.x_edit.value(), self.lower_leg_joint.y_edit.value(), self.lower_leg_joint.z_edit.value(), 0, 0, 0]
+        transform[3] = [self.foot_joint.x_edit.value(), self.foot_joint.y_edit.value(), self.foot_joint.z_edit.value(), 0, 0, 0]
+        
+        return transform
+
+    def get_transform_from_urdf(self):
         links = self.get_leg_links()
         joint_chain = self.parent.rviz_widget.robot.get_joint_chain(links[3])
         transform = []
