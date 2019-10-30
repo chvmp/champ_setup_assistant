@@ -288,7 +288,7 @@ class LegConfiguratorWidget(QWidget):
         super(QWidget, self).__init__()
         self.using_urdf = False
         self.rviz_widget = rviz_widget
-        self.parent_links_list = links_list
+        self.links_list = links_list
         self.leg_configurators = []
         self.rviz_widget.urdf_loaded.connect(self.on_urdf_path_load)
 
@@ -335,7 +335,6 @@ class LegConfiguratorWidget(QWidget):
 
     def on_urdf_path_load(self):
         self.using_urdf = True
-        self.links_list = self.parent_links_list
         links = self.rviz_widget.robot.link_names
         for link in links:
             self.links_list.addItem(link)
