@@ -263,10 +263,10 @@ class LegConfigurator(QWidget):
 
     def get_transform_from_box(self):
         transform = [0,0,0,0]
-        transform[0] = [self.hip_joint.x_edit.value(), self.hip_joint.y_edit.value(), self.hip_joint.z_edit.value(), 0, 0, 0] 
-        transform[1] = [self.upper_leg_joint.x_edit.value(), self.upper_leg_joint.y_edit.value(), self.upper_leg_joint.z_edit.value(), 0, 0, 0] 
-        transform[2] = [self.lower_leg_joint.x_edit.value(), self.lower_leg_joint.y_edit.value(), self.lower_leg_joint.z_edit.value(), 0, 0, 0]
-        transform[3] = [self.foot_joint.x_edit.value(), self.foot_joint.y_edit.value(), self.foot_joint.z_edit.value(), 0, 0, 0]
+        transform[0] = [self.hip_joint.x_edit.value(), self.hip_joint.y_edit.value(), self.hip_joint.z_edit.value(), 0.0, 0.0, 0.0] 
+        transform[1] = [self.upper_leg_joint.x_edit.value(), self.upper_leg_joint.y_edit.value(), self.upper_leg_joint.z_edit.value(), 0.0, 0.0, 0.0] 
+        transform[2] = [self.lower_leg_joint.x_edit.value(), self.lower_leg_joint.y_edit.value(), self.lower_leg_joint.z_edit.value(), 0.0, 0.0, 0.0]
+        transform[3] = [self.foot_joint.x_edit.value(), self.foot_joint.y_edit.value(), self.foot_joint.z_edit.value(), 0.0, 0.0, 0.0]
         
         return transform
 
