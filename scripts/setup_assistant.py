@@ -28,8 +28,8 @@ class SetupAssistant(QWidget):
 
         self.tabs = QTabWidget()
 
-        self.leg_configurator_widget = LegConfiguratorWidget(self.links_list, self.rviz_widget)
-        self.gait_configurator_widget = GaitConfiguratorWidget()
+        self.leg_configurator_widget = LegConfiguratorWidget(self.links_list, self.file_browser_widget, self.rviz_widget)
+        self.gait_configurator_widget = GaitConfiguratorWidget(self.file_browser_widget)
         self.code_gen_widget = CodeGenWidget(self.robot, self.leg_configurator_widget, self.gait_configurator_widget)
 
         self.tabs.addTab(self.leg_configurator_widget, "Leg Configuration")
