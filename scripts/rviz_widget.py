@@ -23,7 +23,7 @@ class RvizWidget(QWidget):
         self.file_browser = file_browser
         self.robot = robot_description
 
-        self.file_browser.load_button.clicked.connect(self.on_urdf_path_load)
+        self.file_browser.new_urdf.connect(self.on_urdf_path_load)
 
         self.column = QHBoxLayout()
         self.row = QVBoxLayout()
@@ -76,7 +76,6 @@ class RvizWidget(QWidget):
         #this is a hack to pass urdf file
         os.environ["CHAMP_SETUP_ASSISTANT_URDF"] = urdf_path
 
-        print self.description_launch_args[1]
         self.description_launcher.shutdown()
         self.description_launcher.start()
 
