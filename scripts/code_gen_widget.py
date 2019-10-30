@@ -175,7 +175,6 @@ class CodeGenWidget(QWidget):
 
     def save_config(self, config, path):
         path = path + "/" + "config.json"
-        print path
         f = open(path, "w")
         content = json.dumps(config, indent=4)
         f.write(content)
