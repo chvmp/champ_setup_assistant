@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import shutil
+import json
 
 from jinja2 import Environment, FileSystemLoader
 from python_qt_binding.QtGui import *
@@ -63,6 +64,7 @@ class CodeGenWidget(QWidget):
 
         self.config = {
             "robot_name" : "",
+            "default_urdf" : "",
             "urdf_path": "",
             "links": {
                 "base": "",
@@ -171,6 +173,14 @@ class CodeGenWidget(QWidget):
         f.write(content)
         f.close()
 
+    def save_config(self, config, path):
+        path = path + "/" + "config.json"
+        print path
+        f = open(path, "w")
+        content = json.dumps(config, indent=4)
+        f.write(content)
+        f.close()
+
     def generate_configuration_package(self):
         leg_configuration = self.leg_configurator.get_configuration()
         gait_configuration = self.gait_configurator.get_configuration()
@@ -178,11 +188,14 @@ class CodeGenWidget(QWidget):
         if leg_configuration != None:
             if self.leg_configurator.using_urdf:
                 self.config["urdf_path"] = self.robot.path
+                self.config["default_urdf"] = "False"
+
             else:
                 leg_configuration["links"]["base"] = "base_link"
                 #TODO add correct generated urdf path
                 self.config["urdf_path"] = "test"
-                
+                self.config["default_urdf"] = "True"
+
             self.config["robot_name"] = self.robot_name
             self.config["links"] = leg_configuration["links"]
             self.config["joints"] = leg_configuration["joints"]
@@ -199,4 +212,5 @@ class CodeGenWidget(QWidget):
             self.generate_from_template(self.config["links"], "links.yaml", self.config_path)
             self.generate_from_template(self.config, "package.xml", self.package_path)
 
+            self.save_config(self.config, self.package_path)
             QMessageBox.information(self, "SUCCESS", "Configuration Package Generated: %s" % self.workspace_path)
