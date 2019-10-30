@@ -18,7 +18,7 @@ class LinkListWidget(QListWidget):
             items_list = self.findItems(link, Qt.MatchExactly)
             if not items_list:
                 self.addItem(link)
-                self.clear_highlight()
+                # self.clear_highlight()
 
     def delete_selected_link(self):
         link_name = self.highlighted_link()
@@ -27,7 +27,7 @@ class LinkListWidget(QListWidget):
         for link in links_list:
             mathced_link = self.row(link)
             self.takeItem(mathced_link)
-            self.clear_highlight()
+            # self.clear_highlight()
 
     def on_click(self, link_name):
         link_name = link_name.text()
@@ -48,7 +48,7 @@ class LinkListWidget(QListWidget):
 
     def delete_first_link(self):
         self.takeItem(0)
-        self.clear_highlight()
+        # self.clear_highlight()
 
     def clear_highlight(self):
         for i in range(self.count()):
@@ -87,10 +87,12 @@ class LegSubConfigurator(QWidget):
     def __init__(self, parent, label):
 
         super(QWidget, self).__init__()
-        self.setFixedHeight(100)
-        self.setFixedWidth(270)
-
         self.parent = parent
+
+        self.parent.rviz_widget.urdf_loaded.connect(self.on_urdf_path_load)
+
+        self.setFixedHeight(150)
+        self.setFixedWidth(270)
 
         self.column = QHBoxLayout()
         self.row = QVBoxLayout()
@@ -100,16 +102,56 @@ class LegSubConfigurator(QWidget):
         self.link_label.setAlignment(Qt.AlignCenter)
 
         self.leg_links_list = LinkListWidget(self.parent.rviz_widget)
+        self.leg_links_list.setVisible(False)
 
         self.buttons_widget = AddDeleteButtonWidget()
         self.buttons_widget.add_button.clicked.connect(self.add_button_clicked)
         self.buttons_widget.delete_button.clicked.connect(self.clear_button_clicked)
+        self.buttons_widget.setVisible(False)
 
-        self.layout.addWidget(self.link_label,0,1)
-        self.layout.addWidget(self.buttons_widget,1,0)
-        self.layout.addWidget(self.leg_links_list,1,1)
+        self.x_label = QLabel("x :")
+        self.x_label.setAlignment(Qt.AlignCenter)
+        self.x_edit = QDoubleSpinBox()
+        self.x_edit.setSingleStep(0.001)
+        self.x_edit.setRange(-100,100)
+
+        self.y_label = QLabel("y :")
+        self.y_label.setAlignment(Qt.AlignCenter)
+        self.y_edit = QDoubleSpinBox()
+        self.y_edit.setSingleStep(0.001)
+        self.y_edit.setRange(-100,100)
+
+        self.z_label = QLabel("z :")
+        self.z_label.setAlignment(Qt.AlignCenter)
+        self.z_edit = QDoubleSpinBox()
+        self.z_edit.setSingleStep(0.001)
+        self.z_edit.setRange(-100,100)
+
+        self.layout.addWidget(self.link_label, 0, 1)
+        self.layout.addWidget(self.buttons_widget, 1, 0)
+        self.layout.addWidget(self.leg_links_list, 1, 1)
+
+        self.layout.addWidget(self.x_label, 2, 0)
+        self.layout.addWidget(self.x_edit, 2, 1)
+
+        self.layout.addWidget(self.y_label, 3, 0)
+        self.layout.addWidget(self.y_edit, 3, 1)
+
+        self.layout.addWidget(self.z_label, 4, 0)
+        self.layout.addWidget(self.z_edit, 4, 1)
 
         self.setLayout(self.layout)
+
+    def on_urdf_path_load(self):
+        self.leg_links_list.show()
+        self.buttons_widget.show()
+        self.x_label.hide()
+        self.y_label.hide()
+        self.z_label.hide()
+        self.x_edit.hide()
+        self.y_edit.hide()
+        self.z_edit.hide()
+        self.setFixedHeight(100)
 
     def add_button_clicked(self):
         link_name = self.parent.links_list.highlighted_link()
@@ -140,7 +182,8 @@ class LegSubConfigurator(QWidget):
 class LegConfigurator(QWidget):
     def __init__(self, parent, leg_name):
         super(QWidget, self).__init__()
-    
+        self.parent = parent
+        
         self.column = QHBoxLayout()
         self.row = QVBoxLayout()
 
@@ -172,22 +215,54 @@ class LegConfigurator(QWidget):
 
         self.setLayout(self.row)
 
-    def get_configuration(self):
+    def get_leg_links(self):
         try:
-            hip = self.hip_link.leg_links_list.item(0).text()
-            upper_leg = self.upper_leg_link.leg_links_list.item(0).text()
-            lower_leg = self.lower_leg_link.leg_links_list.item(0).text()
-            foot = self.foot_link.leg_links_list.item(0).text()
+            if self.parent.using_urdf:
+                hip = self.hip_link.leg_links_list.item(0).text()
+                upper_leg = self.upper_leg_link.leg_links_list.item(0).text()
+                lower_leg = self.lower_leg_link.leg_links_list.item(0).text()
+                foot = self.foot_link.leg_links_list.item(0).text()
+            
+            else:
+                hip = "a"
+                upper_leg = "b"
+                lower_leg = "c"
+                foot = "d"
+
             return [str(hip), str(upper_leg), str(lower_leg), str(foot)]
 
         except:
             return [None, None, None, None] 
 
+    def get_leg_joints(self):
+        links = self.get_leg_links()
+        joints = []
+
+        for i in range(3):
+            joints.append(self.parent.rviz_widget.robot.get_attached_joint(links[i]))
+
+        return joints
+
+    def get_transform(self):
+        links = self.get_leg_links()
+        joint_chain = self.parent.rviz_widget.robot.get_joint_chain(links[3])
+        transform = []
+        #get from transform from base to hip
+        transform.append(self.parent.rviz_widget.robot.get_transform(joint_chain, self.parent.rviz_widget.robot.base, links[0]))
+
+        #from hip all the way to the foot
+        for i in range(3):
+            transform.append(self.parent.rviz_widget.robot.get_transform(joint_chain, links[i], links[i+1]))
+
+        return transform
+
 class LegConfiguratorWidget(QWidget):
     def __init__(self, links_list, rviz_widget):
         super(QWidget, self).__init__()
+        self.using_urdf = False
         self.rviz_widget = rviz_widget
         self.parent_links_list = links_list
+        self.leg_configurators = []
         self.rviz_widget.urdf_loaded.connect(self.on_urdf_path_load)
 
         self.layout = QGridLayout()
@@ -215,6 +290,11 @@ class LegConfiguratorWidget(QWidget):
         self.lh_configurator = LegConfigurator(self, "LEFT HIND")
         self.rh_configurator = LegConfigurator(self, "RIGHT HIND")
 
+        self.leg_configurators.append(self.lf_configurator)
+        self.leg_configurators.append(self.rf_configurator)
+        self.leg_configurators.append(self.lh_configurator)
+        self.leg_configurators.append(self.rh_configurator)
+
         self.leg_tabs = QTabWidget()
         self.leg_tabs.addTab(self.lf_configurator, "Left Front")
         self.leg_tabs.addTab(self.rf_configurator, "Right Front")
@@ -227,30 +307,11 @@ class LegConfiguratorWidget(QWidget):
         self.setLayout(self.column)
 
     def on_urdf_path_load(self):
+        self.using_urdf = True
         self.links_list = self.parent_links_list
         links = self.rviz_widget.robot.link_names
         for link in links:
             self.links_list.addItem(link)
-
-    def get_transforms(self, links):
-        joint_chain = self.rviz_widget.robot.get_joint_chain(links[3])
-        transforms = []
-        #get from transform from base to hip
-        transforms.append(self.rviz_widget.robot.get_transform(joint_chain, self.rviz_widget.robot.base, links[0]))
-
-        #from hip all the way to the foot
-        for i in range(3):
-            transforms.append(self.rviz_widget.robot.get_transform(joint_chain, links[i], links[i+1]))
-
-        return transforms
-
-    def get_leg_joints(self, links):
-        joints = []
-
-        for i in range(3):
-            joints.append(self.rviz_widget.robot.get_attached_joint(links[i]))
-
-        return joints
 
     def get_configuration(self):
         
@@ -297,40 +358,32 @@ class LegConfiguratorWidget(QWidget):
                 }
             }
         }
+
         leg_names = ["left_front", "right_front", "left_hind", "right_hind"]
-
-        links = []
-        transforms = []
-        joints = []
-
-        links.append(self.lf_configurator.get_configuration())
-        links.append(self.rf_configurator.get_configuration())
-        links.append(self.lh_configurator.get_configuration())
-        links.append(self.rh_configurator.get_configuration())
         leg_configuration["links"]["base"] = self.rviz_widget.robot.base
+        leg_configurated = 0
 
         for i in range(4):
-            try:
-                transforms.append(self.get_transforms(links[i]))
-                joints.append(self.get_leg_joints(links[i]))
-                
+            try:            
                 #populate links
-                leg_configuration["links"][leg_names[i]] = links[i]
+                leg_configuration["links"][leg_names[i]] = self.leg_configurators[i].get_leg_links()
                 
                 #populate joints
-                leg_configuration["joints"][leg_names[i]] = joints[i]
+                leg_configuration["joints"][leg_names[i]] = self.leg_configurators[i].get_leg_joints()
 
                 #populate transforms 
-                leg_configuration["firmware"]["transforms"][leg_names[i]]["hip"] = transforms[i][0]
-                leg_configuration["firmware"]["transforms"][leg_names[i]]["upper_leg"] = transforms[i][1]
-                leg_configuration["firmware"]["transforms"][leg_names[i]]["lower_leg"] = transforms[i][2]
-                leg_configuration["firmware"]["transforms"][leg_names[i]]["foot"] = transforms[i][3]
+                leg_transform = self.leg_configurators[i].get_transform()
+                leg_configuration["firmware"]["transforms"][leg_names[i]]["hip"] = leg_transform[0]
+                leg_configuration["firmware"]["transforms"][leg_names[i]]["upper_leg"] = leg_transform[1]
+                leg_configuration["firmware"]["transforms"][leg_names[i]]["lower_leg"] = leg_transform[2]
+                leg_configuration["firmware"]["transforms"][leg_names[i]]["foot"] = leg_transform[3]
 
+                leg_configurated += 1
             except:
                 QMessageBox.information(self, "WARN", "Missing or incorrect link in %s leg" % leg_names[i])
 
         #check if the configuration is complete
-        if len(transforms) == 4 and len(joints) == 4:
+        if leg_configurated == 4:
             return leg_configuration
     
         else:
