@@ -284,7 +284,7 @@ class LegConfigurator(QWidget):
         return transform
 
 class LegConfiguratorWidget(QWidget):
-    def __init__(self, links_list, rviz_widget):
+    def __init__(self, links_list, file_browser_widget, rviz_widget):
         super(QWidget, self).__init__()
         self.using_urdf = False
         self.rviz_widget = rviz_widget

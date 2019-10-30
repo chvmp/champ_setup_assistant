@@ -7,7 +7,7 @@ except ImportError:
     pass
 
 class GaitConfiguratorWidget(QWidget):
-    def __init__(self,):
+    def __init__(self, file_browser_widget):
         super(GaitConfiguratorWidget, self).__init__()
         self.row = QFormLayout()
         
