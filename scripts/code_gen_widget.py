@@ -163,6 +163,8 @@ class CodeGenWidget(QWidget):
 
     def copy_from_template(self, config):
         shutil.copy(self.proj_path + '/templates/firmware_utils.py', self.scripts_path)
+        shutil.copy(self.proj_path + '/templates/hardware_config.h', self.firmware_include_path)
+
         os.chmod(self.scripts_path + '/firmware_utils.py', 509)
 
     def generate_from_template(self, config, template_file, dest):
