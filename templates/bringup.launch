@@ -2,7 +2,7 @@
     <arg name="joints_map_file"  default="$(find {{ robot_name }}_champ_config)/config/joints.yaml"/>
     <arg name="description_file" default="{{ urdf_path }}"/>
     <arg name="base_frame"       default="{{ links["base"] }}"/>
-    <arg name="rviz"            default="False"/>
+    <arg name="rviz"            default="false"/>
 
     <include file="$(find champ_base)/launch/bringup.launch">
         <arg name="joints_map_file" value="$(arg joints_map_file)"/>
