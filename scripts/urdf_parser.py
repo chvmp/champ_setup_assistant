@@ -127,15 +127,4 @@ class URDFParser():
             if joint.name == joint_name:
                 return joint.origin.xyz, joint.origin.rpy
 
-if __name__ == '__main__':
-
-    robot = URDFParser()
-    robot.load_urdf(anymal)  
-    attached_joint = robot.get_attached_joint("lf_foot_link")
-    robot.get_joint_origin(attached_joint)
-    #chain = robot.robot.get_chain("base_link", "lf_foot_link")
-    joint_chain = robot.get_joint_chain("LF_FOOT")
-    link_chain = robot.get_link_chain("LF_FOOT")
-    print joint_chain
-    print robot.get_transform(joint_chain, "LF_SHANK", "LF_FOOT")
 
