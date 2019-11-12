@@ -6,11 +6,6 @@ from rosparam import upload_params
 from yaml import load
 import yaml
 
-config_path = "/home/juan/champ_ws/src/champ_converter/robots/littledog/config/littledog_joints.yaml"
-littledog = "/home/juan/champ_ws/src/littledog_description/urdf/littledog.urdf"
-champ = "/home/juan/champ_ws/src/champ/champ_description/urdf/champ.urdf"
-anymal = "/home/juan/champ_ws/src/anymal_b_simple_description/urdf/anymal.urdf"
-
 class URDFParser():
     def __init__(self):
         self.robot = None
