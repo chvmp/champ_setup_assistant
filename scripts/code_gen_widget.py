@@ -57,10 +57,11 @@ class CodeGenWidget(QWidget):
         self.robot_name = ""
 
         self.package_path = ""
-        self.config_path = ""
-        self.firmware_include_path = ""
-        self.launch_path = ""
-        self.scripts_path = ""
+        self.package_config_path = ""
+        self.package_firmware_include_path = ""
+        self.package_launch_path = ""
+        self.package_scripts_path = ""
+        self.package_urdf_path = ""
 
         self.config = {
             "robot_name" : "",
@@ -132,17 +133,21 @@ class CodeGenWidget(QWidget):
 
     def generate_package_folder(self, ws_src):
         self.package_path = ws_src + "/" + self.package_name
-        self.config_path = self.package_path + "/config"
-        self.firmware_include_path = self.package_path + "/include/firmware"
-        self.launch_path = self.package_path + "/launch"
-        self.scripts_path = self.package_path + "/scripts"
+        self.package_config_path = self.package_path + "/config"
+        self.package_firmware_include_path = self.package_path + "/include/firmware"
+        self.package_launch_path = self.package_path + "/launch"
+        self.package_scripts_path = self.package_path + "/scripts"
+        self.package_urdf_path = self.package_path + "/urdf"
 
         try:
             os.makedirs(self.package_path)
-            os.makedirs(self.config_path)
-            os.makedirs(self.firmware_include_path)
-            os.makedirs(self.launch_path)
-            os.makedirs(self.scripts_path)
+            os.makedirs(self.package_config_path)
+            os.makedirs(self.package_firmware_include_path)
+            os.makedirs(self.package_launch_path)
+            os.makedirs(self.package_scripts_path)
+
+            if not self.leg_configurator.using_urdf:
+                os.makedirs(self.package_urdf_path)
 
         except OSError:
             QMessageBox.information(self, "CONFIG GENERATION FAILED", "Package %s already exists in %s folder" % (self.package_name, self.workspace_path))
@@ -162,10 +167,10 @@ class CodeGenWidget(QWidget):
             self.generate_configuration_package()
 
     def copy_from_template(self, config):
-        shutil.copy(self.proj_path + '/templates/firmware_utils.py', self.scripts_path)
-        shutil.copy(self.proj_path + '/templates/hardware_config.h', self.firmware_include_path)
+        shutil.copy(self.proj_path + '/templates/firmware_utils.py', self.package_scripts_path)
+        shutil.copy(self.proj_path + '/templates/hardware_config.h', self.package_firmware_include_path)
 
-        os.chmod(self.scripts_path + '/firmware_utils.py', 509)
+        os.chmod(self.package_scripts_path + '/firmware_utils.py', 509)
 
     def generate_from_template(self, config, template_file, dest):
         template = self.template_env.get_template(template_file)
@@ -187,15 +192,7 @@ class CodeGenWidget(QWidget):
         gait_configuration = self.gait_configurator.get_configuration()
 
         if leg_configuration != None:
-            if self.leg_configurator.using_urdf:
-                self.config["urdf_path"] = self.robot.path
-                self.config["default_urdf"] = "False"
-
-            else:
-                leg_configuration["links"]["base"] = "base_link"
-                #TODO add correct generated urdf path
-                self.config["urdf_path"] = "test"
-                self.config["default_urdf"] = "True"
+            self.generate_package_folder(self.workspace_path)
 
             self.config["robot_name"] = self.robot_name
             self.config["links"] = leg_configuration["links"]
@@ -203,15 +200,23 @@ class CodeGenWidget(QWidget):
             self.config["firmware"]["transforms"] = leg_configuration["firmware"]["transforms"]
             self.config["firmware"]["gait"] = gait_configuration
 
-            self.generate_package_folder(self.workspace_path)
-            self.copy_from_template(self.config)
+            if self.leg_configurator.using_urdf:
+                self.config["urdf_path"] = self.robot.path
+                self.config["default_urdf"] = "False"
+            else:
+                self.config["links"]["base"] = "base_link"
+                self.config["urdf_path"] = "$(find " + self.robot_name + "_champ_config)/urdf/quadruped.urdf"
+                self.config["default_urdf"] = "True"
+                self.generate_from_template(self.config["firmware"]["transforms"], "quadruped.urdf", self.package_urdf_path)
+
             self.generate_from_template(self.config, "CMakeLists.txt", self.package_path)
-            self.generate_from_template(self.config, "bringup.launch", self.launch_path)
-            self.generate_from_template(self.config["firmware"]["transforms"], "quadruped_description.h", self.firmware_include_path)
-            self.generate_from_template(self.config["firmware"]["gait"], "gait_config.h", self.firmware_include_path)
-            self.generate_from_template(self.config["joints"], "joints.yaml", self.config_path)
-            self.generate_from_template(self.config["links"], "links.yaml", self.config_path)
+            self.generate_from_template(self.config, "bringup.launch", self.package_launch_path)
+            self.generate_from_template(self.config["firmware"]["transforms"], "quadruped_description.h", self.package_firmware_include_path)
+            self.generate_from_template(self.config["firmware"]["gait"], "gait_config.h", self.package_firmware_include_path)
+            self.generate_from_template(self.config["joints"], "joints.yaml", self.package_config_path)
+            self.generate_from_template(self.config["links"], "links.yaml", self.package_config_path)
             self.generate_from_template(self.config, "package.xml", self.package_path)
+            self.copy_from_template(self.config)
 
             self.save_config(self.config, self.package_path)
             QMessageBox.information(self, "SUCCESS", "Configuration Package Generated: %s" % self.workspace_path)
