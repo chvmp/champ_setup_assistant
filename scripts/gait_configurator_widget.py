@@ -22,9 +22,7 @@ class GaitConfiguratorWidget(QWidget):
         self.knee_orientation_edit.addItem("<<")
         self.knee_orientation_edit.addItem("><")
         self.knee_orientation_edit.addItem("<>")
-
         self.knee_orientation_edit.setFixedWidth(200)
-
         self.row.addRow(self.knee_orientation_label, self.knee_orientation_edit)
 
         self.linear_linear_vel_x_label =  QLabel("\tMax Linear Velocity, X Axis (m/s)")
@@ -32,6 +30,7 @@ class GaitConfiguratorWidget(QWidget):
         self.linear_linear_vel_x_edit.setValue(0.5)
         self.linear_linear_vel_x_edit.setFixedWidth(200)
         self.linear_linear_vel_x_edit.setSingleStep(0.01)
+        self.linear_linear_vel_x_edit.setDecimals(3)
         self.row.addRow(self.linear_linear_vel_x_label, self.linear_linear_vel_x_edit)
 
         self.linear_linear_vel_y_label =  QLabel("\tMax Linear Velocity, Y Axis (m/s)")
@@ -39,6 +38,7 @@ class GaitConfiguratorWidget(QWidget):
         self.linear_linear_vel_y_edit.setValue(0.25)
         self.linear_linear_vel_y_edit.setFixedWidth(200)
         self.linear_linear_vel_y_edit.setSingleStep(0.01)
+        self.linear_linear_vel_y_edit.setDecimals(3)
         self.row.addRow(self.linear_linear_vel_y_label, self.linear_linear_vel_y_edit)
 
         self.linear_angular_vel_z_label =  QLabel("\tMax Angular Velocity, Z Axis (rad/s)")
@@ -46,6 +46,7 @@ class GaitConfiguratorWidget(QWidget):
         self.linear_angular_vel_z_edit.setValue(1.0)
         self.linear_angular_vel_z_edit.setFixedWidth(200)
         self.linear_angular_vel_z_edit.setSingleStep(0.01)
+        self.linear_angular_vel_z_edit.setDecimals(3)
         self.row.addRow(self.linear_angular_vel_z_label, self.linear_angular_vel_z_edit)
 
         self.max_theta_label =  QLabel("\tMax Whole Body Rotational Angle (rad)")
@@ -53,6 +54,7 @@ class GaitConfiguratorWidget(QWidget):
         self.max_theta_edit.setValue(0.35)
         self.max_theta_edit.setFixedWidth(200)
         self.max_theta_edit.setSingleStep(0.01)
+        self.max_theta_edit.setDecimals(3)
         self.row.addRow(self.max_theta_label, self.max_theta_edit)
 
         self.max_step_length_label =  QLabel("\tMax Step Length (m)")
@@ -60,6 +62,7 @@ class GaitConfiguratorWidget(QWidget):
         self.max_step_length_edit.setValue(0.11)
         self.max_step_length_edit.setFixedWidth(200)
         self.max_step_length_edit.setSingleStep(0.01)
+        self.max_step_length_edit.setDecimals(3)
         self.row.addRow(self.max_step_length_label, self.max_step_length_edit)
 
         self.swing_height_label =  QLabel("\tGait Swing Height (m)")
@@ -67,6 +70,7 @@ class GaitConfiguratorWidget(QWidget):
         self.swing_height_edit.setValue(0.04)
         self.swing_height_edit.setFixedWidth(200)
         self.swing_height_edit.setSingleStep(0.01)
+        self.swing_height_edit.setDecimals(3)
         self.row.addRow(self.swing_height_label, self.swing_height_edit)
 
         self.stance_height_label =  QLabel("\tGait Stance Height (m)")
@@ -74,6 +78,7 @@ class GaitConfiguratorWidget(QWidget):
         self.stance_height_edit.setValue(0.0)
         self.stance_height_edit.setFixedWidth(200)
         self.stance_height_edit.setSingleStep(0.01)
+        self.stance_height_edit.setDecimals(3)
         self.row.addRow(self.stance_height_label, self.stance_height_edit)
 
         self.nominal_height_label = QLabel("\tRobot Walking Height (m)")
@@ -81,6 +86,7 @@ class GaitConfiguratorWidget(QWidget):
         self.nominal_height_edit.setValue(0.2)
         self.nominal_height_edit.setFixedWidth(200)
         self.nominal_height_edit.setSingleStep(0.01)
+        self.nominal_height_edit.setDecimals(3)
         self.row.addRow(self.nominal_height_label, self.nominal_height_edit)
 
         self.setLayout(self.row)
