@@ -2,8 +2,7 @@
 #define MAX_LINEAR_VELOCITY_X   {{ max_linear_vel_x }}
 #define MAX_LINEAR_VELOCITY_Y   {{ max_linear_vel_y }}
 #define MAX_ANGULAR_VELOCITY_Z  {{ max_angular_vel_z }}
-#define MAX_THETA               {{ max_theta }}
 #define SWING_HEIGHT            {{ swing_height }}
 #define STANCE_DEPTH            {{ stance_depth }}
-#define MAX_STEP_LENGTH         {{ max_step_length }}
+#define STANCE_DURATION         {{ stance_duration }}
 #define NOMINAL_HEIGHT          {{ nominal_height }}
