@@ -109,14 +109,15 @@ class CodeGenWidget(QWidget):
                     }
                 },
                 "gait": {
-                "knee_orientation": "",
-                "max_linear_vel_x": 0,
-                "max_linear_vel_y": 0,
-                "max_angular_vel_z": 0,
-                "stance_duration": 0,
-                "swing_height": 0,
-                "stance_depth": 0,
-                "nominal_height": 0
+                    "knee_orientation": "",
+                    "is_pantograph": "",
+                    "max_linear_vel_x": 0,
+                    "max_linear_vel_y": 0,
+                    "max_angular_vel_z": 0,
+                    "stance_duration": 0,
+                    "swing_height": 0,
+                    "stance_depth": 0,
+                    "nominal_height": 0
                 }
             }
         }

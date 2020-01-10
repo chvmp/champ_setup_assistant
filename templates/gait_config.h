@@ -1,4 +1,5 @@
 #define KNEE_ORIENTATION        "{{ knee_orientation }}"
+#define PANTOGRAPH_LEG          {{ is_pantograph }}
 #define MAX_LINEAR_VELOCITY_X   {{ max_linear_vel_x }}
 #define MAX_LINEAR_VELOCITY_Y   {{ max_linear_vel_y }}
 #define MAX_ANGULAR_VELOCITY_Z  {{ max_angular_vel_z }}

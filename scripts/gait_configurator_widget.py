@@ -25,6 +25,13 @@ class GaitConfiguratorWidget(QWidget):
         self.knee_orientation_edit.setFixedWidth(200)
         self.row.addRow(self.knee_orientation_label, self.knee_orientation_edit)
 
+        self.pantograph_leg_label = QLabel("\tKnee Orientation")
+        self.pantograph_leg_edit = QComboBox()
+        self.pantograph_leg_edit.addItem("false")
+        self.pantograph_leg_edit.addItem("true")
+        self.pantograph_leg_edit.setFixedWidth(200)
+        self.row.addRow(self.pantograph_leg_label, self.pantograph_leg_edit)
+
         self.linear_linear_vel_x_label =  QLabel("\tMax Linear Velocity, X Axis (m/s)")
         self.linear_linear_vel_x_edit = QDoubleSpinBox()
         self.linear_linear_vel_x_edit.setValue(0.5)
