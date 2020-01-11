@@ -25,7 +25,7 @@ class GaitConfiguratorWidget(QWidget):
         self.knee_orientation_edit.setFixedWidth(200)
         self.row.addRow(self.knee_orientation_label, self.knee_orientation_edit)
 
-        self.pantograph_leg_label = QLabel("\tKnee Orientation")
+        self.pantograph_leg_label = QLabel("\tPantograph Leg")
         self.pantograph_leg_edit = QComboBox()
         self.pantograph_leg_edit.addItem("false")
         self.pantograph_leg_edit.addItem("true")
@@ -92,7 +92,8 @@ class GaitConfiguratorWidget(QWidget):
 
     def get_configuration(self):
         gait_config = {
-            "knee_orientation": 0,
+            "knee_orientation": ">>",
+            "max_linear_vel_x": "false",
             "max_linear_vel_x": 0,
             "max_linear_vel_y": 0,
             "max_angular_vel_z": 0,
@@ -103,6 +104,7 @@ class GaitConfiguratorWidget(QWidget):
         }
 
         gait_config["knee_orientation"] = str(self.knee_orientation_edit.currentText())
+        gait_config["pantograph_leg"] = str(self.pantograph_leg_edit.currentText())
         gait_config["max_linear_vel_x"] = self.linear_linear_vel_x_edit.value()
         gait_config["max_linear_vel_y"] = self.linear_linear_vel_y_edit.value()
         gait_config["max_angular_vel_z"] = self.linear_angular_vel_z_edit.value()
