@@ -29,6 +29,25 @@
     DynamixelAX12A::Plugin rhl_actuator(Serial1, 11, 8, 0, 0, false);
 #endif 
 
+#ifdef USE_SERVO_ACTUATOR
+    #define ACTUATOR DigitalServo
+    DigitalServo::Plugin lfh_actuator(0,-2.35619, 2.35619, 0, 0, false);
+    DigitalServo::Plugin lfu_actuator(1,-2.35619, 2.35619, 0, 0, false);
+    DigitalServo::Plugin lfl_actuator(2,-2.35619, 2.35619, 0, 0, false);
+
+    DigitalServo::Plugin rfh_actuator(3,-2.35619, 2.35619, 0, 0, false);
+    DigitalServo::Plugin rfu_actuator(4,-2.35619, 2.35619, 0, 0, false);
+    DigitalServo::Plugin rfl_actuator(5,-2.35619, 2.35619, 0, 0, false);
+
+    DigitalServo::Plugin lhh_actuator(6,-2.35619, 2.35619, 0, 0, false);
+    DigitalServo::Plugin lhu_actuator(7,-2.35619, 2.35619, 0, 0, false);
+    DigitalServo::Plugin lhl_actuator(8,-2.35619, 2.35619, 0, 0, false);
+
+    DigitalServo::Plugin rhh_actuator(9,-2.35619, 2.35619, 0, 0, false);
+    DigitalServo::Plugin rhu_actuator(10,-2.35619, 2.35619, 0, 0, false);
+    DigitalServo::Plugin rhl_actuator(11,-2.35619, 2.35619, 0, 0, false);
+#endif 
+
 #ifdef USE_SIMULATION_ACTUATOR
     #define ACTUATOR SimulationActuator
     SimulationActuator::Plugin lfh_actuator;
@@ -50,6 +69,7 @@
 
 Actuator<ACTUATOR::Plugin> actuators
 (
+    PANTOGRAPH_LEG,
     lfh_actuator, lfu_actuator, lfl_actuator,
     rfh_actuator,rfu_actuator,rfl_actuator,
     lhh_actuator,lhu_actuator,lhl_actuator,
