@@ -1,4 +1,7 @@
-#include <quadruped_base.h>
+#ifndef QUADRUPED_DESCRIPTION_H
+#define QUADRUPED_DESCRIPTION_H
+
+#include <quadruped_base/quadruped_base.h>
 
 Joint        lf_hip({{ left_front["hip"][0] }}, {{ left_front["hip"][1] }}, {{ left_front["hip"][2] }}, {{ left_front["hip"][3] }}, {{ left_front["hip"][4] }}, {{ left_front["hip"][5] }});
 Joint  lf_upper_leg({{ left_front["upper_leg"][0] }}, {{ left_front["upper_leg"][1] }}, {{ left_front["upper_leg"][2] }}, {{ left_front["upper_leg"][3] }}, {{ left_front["upper_leg"][4] }}, {{ left_front["upper_leg"][5] }});
@@ -24,3 +27,5 @@ QuadrupedLeg lf_leg(lf_hip, lf_upper_leg, lf_lower_leg, lf_foot);
 QuadrupedLeg rf_leg(rf_hip, rf_upper_leg, rf_lower_leg, rf_foot);;
 QuadrupedLeg lh_leg(lh_hip, lh_upper_leg, lh_lower_leg, lh_foot);
 QuadrupedLeg rh_leg(rh_hip, rh_upper_leg, rh_lower_leg, rh_foot);
+
+#endif
