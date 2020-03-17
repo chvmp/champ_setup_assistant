@@ -1,4 +1,4 @@
-#include <quadruped_base.h>
+#include <quadruped_base/quadruped_base.h>
 
 Joint        lf_hip({{ left_front["hip"][0] }}, {{ left_front["hip"][1] }}, {{ left_front["hip"][2] }}, {{ left_front["hip"][3] }}, {{ left_front["hip"][4] }}, {{ left_front["hip"][5] }});
 Joint  lf_upper_leg({{ left_front["upper_leg"][0] }}, {{ left_front["upper_leg"][1] }}, {{ left_front["upper_leg"][2] }}, {{ left_front["upper_leg"][3] }}, {{ left_front["upper_leg"][4] }}, {{ left_front["upper_leg"][5] }});

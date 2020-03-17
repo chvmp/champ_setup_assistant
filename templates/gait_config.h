@@ -1,3 +1,6 @@
+#ifndef GAIT_CONFIG_H
+#define GAIT_CONFIG_H
+
 #define KNEE_ORIENTATION        "{{ knee_orientation }}"
 #define PANTOGRAPH_LEG          {{ pantograph_leg }}
 #define MAX_LINEAR_VELOCITY_X   {{ max_linear_vel_x }}
@@ -7,3 +10,5 @@
 #define STANCE_DEPTH            {{ stance_depth }}
 #define STANCE_DURATION         {{ stance_duration }}
 #define NOMINAL_HEIGHT          {{ nominal_height }}
+
+#endif

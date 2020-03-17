@@ -1,85 +1,97 @@
-#include <actuator.h>
-#include <imu.h>
+#ifndef HARDWARE_CONFIG_H
+#define HARDWARE_CONFIG_H
 
 #define USE_SIMULATION_ACTUATOR
 // #define USE_DYNAMIXEL_ACTUATOR
-// #define USE_BRUSHLESS_ACTUATOR
 // #define USE_SERVO_ACTUATOR
+// #define USE_BRUSHLESS_ACTUATOR
 
 #define USE_SIMULATION_IMU
 // #define USE_BNO0809DOF_IMU
 
+// #define USE_RF_CONTROLLER
+
+#ifdef USE_RF_CONTROLLER
+    #define ELE_PIN 16
+    #define AIL_PIN 21
+    #define RUD_PIN 17
+    #define THR_PIN 20
+    #define AUX1_PIN 22
+    #define AUX2_PIN 23
+    #define RF_INV_LX false
+    #define RF_INV_LY false
+    #define RF_INV_AZ false
+    #define RF_INV_ROLL true
+    #define RF_INV_PITCH false
+    #define RF_INV_YAW false
+#endif
+
 #ifdef USE_DYNAMIXEL_ACTUATOR
-    // (serial_interface, actuator_leg_id, actuator_driver_id,  min_angle,max_angle, inverted)
-    #define ACTUATOR DynamixelAX12A
-    DynamixelAX12A::Plugin lfh_actuator(Serial1, 0, 16, 0, 0, false);
-    DynamixelAX12A::Plugin lfu_actuator(Serial1, 1, 17, 0, 0, false);
-    DynamixelAX12A::Plugin lfl_actuator(Serial1, 2, 18, 0, 0, true);
+    #define LFH_SERVO_ID 16
+    #define LFU_SERVO_ID 17
+    #define LFL_SERVO_ID 18
 
-    DynamixelAX12A::Plugin rfh_actuator(Serial1, 3, 14, 0, 0, false);
-    DynamixelAX12A::Plugin rfu_actuator(Serial1, 4, 13, 0, 0, true);
-    DynamixelAX12A::Plugin rfl_actuator(Serial1, 5, 4, 0, 0, false);
+    #define RFH_SERVO_ID 14
+    #define RFU_SERVO_ID 7
+    #define RFL_SERVO_ID 4
 
-    DynamixelAX12A::Plugin lhh_actuator(Serial1, 6, 2, 0, 0, false);
-    DynamixelAX12A::Plugin lhu_actuator(Serial1, 7, 11, 0, 0, false);
-    DynamixelAX12A::Plugin lhl_actuator(Serial1, 8, 12, 0, 0, true);
+    #define LHH_SERVO_ID 2
+    #define LHU_SERVO_ID 11
+    #define LHL_SERVO_ID 12
 
-    DynamixelAX12A::Plugin rhh_actuator(Serial1, 9, 6, 0, 0, false);
-    DynamixelAX12A::Plugin rhu_actuator(Serial1, 10, 5, 0, 0, true);
-    DynamixelAX12A::Plugin rhl_actuator(Serial1, 11, 8, 0, 0, false);
+    #define RHH_SERVO_ID 6
+    #define RHU_SERVO_ID 5
+    #define RHL_SERVO_ID 8
+
+    #define LFH_INV false
+    #define LFU_INV false
+    #define LFL_INV true
+
+    #define RFH_INV false
+    #define RFU_INV true
+    #define RFL_INV false
+
+    #define LHH_INV false
+    #define LHU_INV false
+    #define LHL_INV true
+
+    #define RHH_INV false
+    #define RHU_INV true
+    #define RHL_INV false
 #endif 
 
 #ifdef USE_SERVO_ACTUATOR
-    #define ACTUATOR DigitalServo
-    DigitalServo::Plugin lfh_actuator(0,-2.35619, 2.35619, 0, 0, false);
-    DigitalServo::Plugin lfu_actuator(1,-2.35619, 2.35619, 0, 0, false);
-    DigitalServo::Plugin lfl_actuator(2,-2.35619, 2.35619, 0, 0, false);
+    #define LFH_PIN 2
+    #define LFU_PIN 3
+    #define LFL_PIN 4
 
-    DigitalServo::Plugin rfh_actuator(3,-2.35619, 2.35619, 0, 0, false);
-    DigitalServo::Plugin rfu_actuator(4,-2.35619, 2.35619, 0, 0, false);
-    DigitalServo::Plugin rfl_actuator(5,-2.35619, 2.35619, 0, 0, false);
+    #define RFH_PIN 23
+    #define RFU_PIN 22
+    #define RFL_PIN 21
 
-    DigitalServo::Plugin lhh_actuator(6,-2.35619, 2.35619, 0, 0, false);
-    DigitalServo::Plugin lhu_actuator(7,-2.35619, 2.35619, 0, 0, false);
-    DigitalServo::Plugin lhl_actuator(8,-2.35619, 2.35619, 0, 0, false);
+    #define LHH_PIN 6
+    #define LHU_PIN 7
+    #define LHL_PIN 8
 
-    DigitalServo::Plugin rhh_actuator(9,-2.35619, 2.35619, 0, 0, false);
-    DigitalServo::Plugin rhu_actuator(10,-2.35619, 2.35619, 0, 0, false);
-    DigitalServo::Plugin rhl_actuator(11,-2.35619, 2.35619, 0, 0, false);
-#endif 
+    #define RHH_PIN 17
+    #define RHU_PIN 16
+    #define RHL_PIN 14
 
-#ifdef USE_SIMULATION_ACTUATOR
-    #define ACTUATOR SimulationActuator
-    SimulationActuator::Plugin lfh_actuator;
-    SimulationActuator::Plugin lfu_actuator;
-    SimulationActuator::Plugin lfl_actuator;
+    #define LFH_INV false
+    #define LFU_INV false
+    #define LFL_INV true
 
-    SimulationActuator::Plugin rfh_actuator;
-    SimulationActuator::Plugin rfu_actuator;
-    SimulationActuator::Plugin rfl_actuator;
+    #define RFH_INV false
+    #define RFU_INV true
+    #define RFL_INV false
 
-    SimulationActuator::Plugin lhh_actuator;
-    SimulationActuator::Plugin lhu_actuator;
-    SimulationActuator::Plugin lhl_actuator;
+    #define LHH_INV false
+    #define LHU_INV false
+    #define LHL_INV true
 
-    SimulationActuator::Plugin rhh_actuator;
-    SimulationActuator::Plugin rhu_actuator;
-    SimulationActuator::Plugin rhl_actuator;
-#endif 
-
-Actuator<ACTUATOR::Plugin> actuators
-(
-    PANTOGRAPH_LEG,
-    lfh_actuator, lfu_actuator, lfl_actuator,
-    rfh_actuator,rfu_actuator,rfl_actuator,
-    lhh_actuator,lhu_actuator,lhl_actuator,
-    rhh_actuator,rhu_actuator, rhl_actuator
-);
-
-#ifdef USE_SIMULATION_IMU
-    IMU<SimulationIMU::Plugin> imu;
+    #define RHH_INV false
+    #define RHU_INV true
+    #define RHL_INV false
 #endif
 
-#ifdef USE_BNO0809DOF_IMU
-    IMU<BNO0809DOF::Plugin> imu;
 #endif
