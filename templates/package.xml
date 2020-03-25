@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>{{ robot_name }}_champ_config</name>
+  <name>{{ robot_name }}_config</name>
   <version>0.0.0</version>
   <description>{{ robot_name }} Champ Config Package</description>
 

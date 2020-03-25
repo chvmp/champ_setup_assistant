@@ -1,6 +1,6 @@
 <launch>
-    <arg name="joints_map_file"  default="$(find {{ robot_name }}_champ_config)/config/joints/joints.yaml"/>
-    <arg name="joints_map_file"  default="$(find {{ robot_name }}_champ_config)/config/links/links.yaml"/>
+    <arg name="joints_map_file"  default="$(find {{ robot_name }}_config)/config/joints/joints.yaml"/>
+    <arg name="joints_map_file"  default="$(find {{ robot_name }}_config)/config/links/links.yaml"/>
     <arg name="description_file" default="{{ urdf_path }}"/>
     <arg name="base_frame"       default="{{ links["base"] }}"/>
     <arg name="rviz"             default="false"/>

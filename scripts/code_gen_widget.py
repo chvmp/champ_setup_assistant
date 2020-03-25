@@ -159,7 +159,7 @@ class CodeGenWidget(QWidget):
             return True
 
     def gen_button_clicked(self):
-        self.package_name = self.robot_name_edit.text() + "_champ_config"
+        self.package_name = self.robot_name_edit.text() + "_config"
         if not self.robot_name:
             QMessageBox.information(self, "ERROR", "Robot Name is empty")
 
@@ -209,7 +209,7 @@ class CodeGenWidget(QWidget):
                 self.config["default_urdf"] = "False"
             else:
                 self.config["links"]["base"] = "base_link"
-                self.config["urdf_path"] = "$(find " + self.robot_name + "_champ_config)/urdf/quadruped.urdf"
+                self.config["urdf_path"] = "$(find " + self.robot_name + "_config)/urdf/quadruped.urdf"
                 self.config["default_urdf"] = "True"
                 self.generate_from_template(self.config["firmware"]["transforms"], "quadruped.urdf", self.package_urdf_path)
 
