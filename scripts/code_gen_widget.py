@@ -59,7 +59,7 @@ class CodeGenWidget(QWidget):
         self.package_path = ""
         self.package_config_joints_path = ""
         self.package_config_links_path = ""
-        self.package_firmware_include_path = ""
+        self.package_include_path = ""
         self.package_launch_path = ""
         self.package_scripts_path = ""
         self.package_urdf_path = ""
@@ -136,7 +136,7 @@ class CodeGenWidget(QWidget):
         self.package_path = ws_src + "/" + self.package_name
         self.package_config_joints_path = self.package_path + "/config/joints"
         self.package_config_links_path = self.package_path + "/config/links"
-        self.package_firmware_include_path = self.package_path + "/include/firmware"
+        self.package_include_path = self.package_path + "/include"
         self.package_launch_path = self.package_path + "/launch"
         self.package_scripts_path = self.package_path + "/scripts"
         self.package_urdf_path = self.package_path + "/urdf"
@@ -145,7 +145,7 @@ class CodeGenWidget(QWidget):
             os.makedirs(self.package_path)
             os.makedirs(self.package_config_joints_path)
             os.makedirs(self.package_config_links_path)
-            os.makedirs(self.package_firmware_include_path)
+            os.makedirs(self.package_include_path)
             os.makedirs(self.package_launch_path)
             os.makedirs(self.package_scripts_path)
 
@@ -171,7 +171,8 @@ class CodeGenWidget(QWidget):
 
     def copy_from_template(self, config):
         shutil.copy(self.proj_path + '/templates/firmware_utils.py', self.package_scripts_path)
-        shutil.copy(self.proj_path + '/templates/hardware_config.h', self.package_firmware_include_path)
+        shutil.copy(self.proj_path + '/templates/hardware_config.h', self.package_include_path)
+        shutil.copy(self.proj_path + '/templates/setup.bash', self.package_path)
 
         os.chmod(self.package_scripts_path + '/firmware_utils.py', 509)
 
@@ -214,8 +215,8 @@ class CodeGenWidget(QWidget):
 
             self.generate_from_template(self.config, "CMakeLists.txt", self.package_path)
             self.generate_from_template(self.config, "bringup.launch", self.package_launch_path)
-            self.generate_from_template(self.config["firmware"]["transforms"], "quadruped_description.h", self.package_firmware_include_path)
-            self.generate_from_template(self.config["firmware"]["gait"], "gait_config.h", self.package_firmware_include_path)
+            self.generate_from_template(self.config["firmware"]["transforms"], "quadruped_description.h", self.package_include_path)
+            self.generate_from_template(self.config["firmware"]["gait"], "gait_config.h", self.package_include_path)
             self.generate_from_template(self.config["joints"], "joints.yaml", self.package_config_joints_path)
             self.generate_from_template(self.config["links"], "links.yaml", self.package_config_links_path)
             self.generate_from_template(self.config, "package.xml", self.package_path)
