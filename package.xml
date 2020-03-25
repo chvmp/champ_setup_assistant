@@ -1,12 +1,17 @@
 <package format="2">
     <name>champ_setup_assistant</name>
-    <version>0.0.1</version>
-    <description>Champ Robot Converter Package</description>
+    <version>0.1.0</version>
+    <description>Champ Robot Setup Assistant</description>
 
-    <license>BSD-3</license>
+    <license>BSD</license>
 
     <author email="jimenojmm@gmail.com">Juan Jimeno</author>
     <maintainer email="jimenojmm@gmail.com.com">Juan Jimeno</maintainer>
 
     <buildtool_depend>catkin</buildtool_depend>
+    <exec_depend>moveit_ros_planning_interface</exec_depend>
+    <exec_depend>python-jinja2</exec_depend>
+    <exec_depend>python_qt_binding</exec_depend>
+    <exec_depend>urdfdom_py</exec_depend>
+
 </package>
