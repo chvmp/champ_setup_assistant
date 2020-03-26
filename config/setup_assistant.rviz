@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /Axes1
       Splitter Ratio: 0.484764546
     Tree Height: 418
   - Class: rviz/Selection
@@ -84,6 +85,13 @@ Visualization Manager:
       Unhighlight Link: ""
       Value: true
       Visual Enabled: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 1
+      Name: Axes
+      Radius: 0.00999999978
+      Reference Frame: <Fixed Frame>
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 42; 42; 42
