@@ -95,7 +95,7 @@ class GaitConfiguratorWidget(QWidget):
         self.stance_duration_edit.setDecimals(3)
         self.row.addRow(self.stance_duration_label, self.stance_duration_edit)
 
-        self.swing_height_label =  QLabel("\Leg Swing Height (m)")
+        self.swing_height_label =  QLabel("\tLeg Swing Height (m)")
         self.swing_height_label.setFont(QFont("Default", pointSize=9))
         self.swing_height_edit = QDoubleSpinBox()
         self.swing_height_edit.setValue(0.04)
@@ -104,7 +104,7 @@ class GaitConfiguratorWidget(QWidget):
         self.swing_height_edit.setDecimals(3)
         self.row.addRow(self.swing_height_label, self.swing_height_edit)
 
-        self.stance_height_label =  QLabel("\Leg Stance Height (m)")
+        self.stance_height_label =  QLabel("\tLeg Stance Height (m)")
         self.stance_height_label.setFont(QFont("Default", pointSize=9))
         self.stance_height_edit = QDoubleSpinBox()
         self.stance_height_edit.setValue(0.0)
