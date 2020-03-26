@@ -37,7 +37,7 @@ class LinkListWidget(QListWidget):
         self.rviz_widget = rviz_widget
 
         self.itemClicked.connect(self.on_click)
-
+        
     def add_link(self, link):
         if link:
             items_list = self.findItems(link, Qt.MatchExactly)
@@ -114,15 +114,16 @@ class JointConfigurator(QWidget):
         self.parent = parent
 
         self.parent.rviz_widget.urdf_loaded.connect(self.on_urdf_path_load)
-
-        self.setFixedHeight(150)
-        self.setFixedWidth(270)
+        self.setFont(QFont("Default", pointSize=9))
+        # self.setFixedHeight(150)
+        # self.setFixedWidth(150)
 
         self.column = QHBoxLayout()
         self.row = QVBoxLayout()
         self.layout = QGridLayout()
 
         self.link_label = QLabel(label)
+        self.link_label.setFont(QFont("Default", pointSize=9))
         self.link_label.setAlignment(Qt.AlignCenter)
 
         self.leg_links_list = LinkListWidget(self.parent.rviz_widget)
@@ -134,6 +135,7 @@ class JointConfigurator(QWidget):
         self.buttons_widget.setVisible(False)
 
         self.x_label = QLabel("x :")
+        self.x_label.setFont(QFont("Default", pointSize=9))
         self.x_label.setAlignment(Qt.AlignCenter)
         self.x_edit = QDoubleSpinBox()
         self.x_edit.setSingleStep(0.001)
@@ -141,6 +143,7 @@ class JointConfigurator(QWidget):
         self.x_edit.setDecimals(3)
 
         self.y_label = QLabel("y :")
+        self.y_label.setFont(QFont("Default", pointSize=9))
         self.y_label.setAlignment(Qt.AlignCenter)
         self.y_edit = QDoubleSpinBox()
         self.y_edit.setSingleStep(0.001)
@@ -149,6 +152,7 @@ class JointConfigurator(QWidget):
 
         self.z_label = QLabel("z :")
         self.z_label.setAlignment(Qt.AlignCenter)
+        self.z_label.setFont(QFont("Default", pointSize=9))
         self.z_edit = QDoubleSpinBox()
         self.z_edit.setSingleStep(0.001)
         self.z_edit.setRange(-100,100)
@@ -171,6 +175,7 @@ class JointConfigurator(QWidget):
 
     def on_urdf_path_load(self):
         self.leg_links_list.show()
+        
         self.buttons_widget.show()
         self.x_label.hide()
         self.y_label.hide()
@@ -209,25 +214,28 @@ class LegConfigurator(QWidget):
     def __init__(self, parent, leg_name):
         super(QWidget, self).__init__()
         self.parent = parent
-        
+        self.parent.rviz_widget.urdf_loaded.connect(self.on_urdf_path_load)
+
         self.leg_name = leg_name
 
         self.column = QHBoxLayout()
         self.row = QVBoxLayout()
 
         self.tab_label = QLabel("\t%s LEG CONFIGURATION\n" % self.leg_name)
-
-        instruction_text =("        Add all links related to the leg's part.\n\
+        self.tab_label.setFont(QFont("Default", pointSize=10, weight=QFont.Bold))
+        self.tab_label.setAlignment(Qt.AlignCenter)
+        instruction_text =("\n\
+        Add the translation between actuators manually if you don't have a URDF.\n\
         \n\
-        ADDING A LINK         :   Click the link where the revolute joint is attached for each leg part. This is usually the child link of the joint.\n\
-        DELETING A LINK     :   Click < to clear the leg part.\
-        \n\
-            ")
+        HIP               - Translation from center of base to the hip actuator.\n\
+        UPPER LEG   - Translation from the hip actuator to the upper leg actuator.\n\
+        LOWER LEG  - Translation from the upper leg actuator to the lower leg actuator.\n\
+        FOOT            - Translation from the lower leg actuator to the foot.\n\
+        ")
 
         self.instructions = QLabel(instruction_text)
+        self.instructions.setFont(QFont("Default", pointSize=9))
 
-        self.tab_label.setFont(QFont("Default", pointSize=12 ,weight=QFont.Bold))
-        self.tab_label.setAlignment(Qt.AlignCenter)
         self.hip_joint = JointConfigurator(parent, "HIP")
         self.column.addWidget(self.hip_joint)
         self.upper_leg_joint = JointConfigurator(parent, "UPPER LEG")
@@ -308,6 +316,19 @@ class LegConfigurator(QWidget):
 
         return transform
 
+    def on_urdf_path_load(self):
+        self.instructions.setText("        Add all links related to the leg's part.\n\
+        \n\
+        ADDING A LINK\n\
+        Select a link from the left pane.\n\
+        Click > to add into the leg part.\n\
+        *If there are more than one link in a leg part, select the link nearest to the next leg part.\n\
+        \n\
+        DELETING A LINK\n\
+        Click < to clear the leg part.\n\
+            ")
+
+
 class LegConfiguratorWidget(QWidget):
     def __init__(self, links_list, file_browser_widget, rviz_widget):
         super(QWidget, self).__init__()
@@ -334,8 +355,9 @@ class LegConfiguratorWidget(QWidget):
 
         self.links_list = links_list
         self.list_stack_row.addWidget(self.links_list)
-        self.links_list.setFixedWidth(230)
-        self.links_list.setFixedHeight(400)
+        self.links_list.setFixedWidth(140)
+        self.links_list.setFont(QFont("Default", pointSize=10))
+        # self.links_list.setFixedHeight(400)
 
         self.lf_configurator = LegConfigurator(self, "LEFT FRONT")
         self.rf_configurator = LegConfigurator(self, "RIGHT FRONT")
@@ -348,10 +370,10 @@ class LegConfiguratorWidget(QWidget):
         self.leg_configurators.append(self.rh_configurator)
 
         self.leg_tabs = QTabWidget()
-        self.leg_tabs.addTab(self.lf_configurator, "Left Front")
-        self.leg_tabs.addTab(self.rf_configurator, "Right Front")
-        self.leg_tabs.addTab(self.lh_configurator, "Left Hind")
-        self.leg_tabs.addTab(self.rh_configurator, "Right Hind")
+        self.leg_tabs.addTab(self.lf_configurator, "Left Front Leg")
+        self.leg_tabs.addTab(self.rf_configurator, "Right Front Leg")
+        self.leg_tabs.addTab(self.lh_configurator, "Left Hind Leg")
+        self.leg_tabs.addTab(self.rh_configurator, "Right Hind Leg")
 
         self.column.addLayout(self.list_stack_row)
         self.column.addWidget(self.leg_tabs)
@@ -424,6 +446,50 @@ class LegConfiguratorWidget(QWidget):
 
                 #populate transforms 
                 leg_transform = self.leg_configurators[i].get_transform()
+                '''
+                make sure x and y of hip are using the correct sign
+                translation from reference
+                leg_transform[part][axis]
+                where part:
+                0 - hip joint
+                1 - upper leg joint
+                2 - lower leg joint 
+                3 - foot
+
+                where axis is:
+                0 - x
+                1 - y
+                2 - z
+                '''
+                if i == 0:
+                    #lf hip -x
+                    leg_transform[0][0] = abs(leg_transform[0][0])
+                    #lf hip -y
+                    leg_transform[0][1] = abs(leg_transform[0][1])
+
+                elif i == 1:
+                    #rf hip -x
+                    leg_transform[0][0] = abs(leg_transform[0][0])
+                    #rf hip -y
+                    leg_transform[0][1] = -abs(leg_transform[0][1])
+
+                elif i == 2:
+                    #lh hip -x
+                    leg_transform[0][0] = -abs(leg_transform[0][0])
+                    #lh hip -y
+                    leg_transform[0][1] = abs(leg_transform[0][1])
+
+                elif i == 3:
+                    #rh hip -x
+                    leg_transform[0][0] = -abs(leg_transform[0][0])
+                    #rh hip -y
+                    leg_transform[0][1] = -abs(leg_transform[0][1])
+
+                #z of the rest
+                leg_transform[1][2] = -abs(leg_transform[1][2])
+                leg_transform[2][2] = -abs(leg_transform[2][2])
+                leg_transform[3][2] = -abs(leg_transform[3][2])
+
                 leg_configuration["firmware"]["transforms"][leg_names[i]]["hip"] = leg_transform[0]
                 leg_configuration["firmware"]["transforms"][leg_names[i]]["upper_leg"] = leg_transform[1]
                 leg_configuration["firmware"]["transforms"][leg_names[i]]["lower_leg"] = leg_transform[2]

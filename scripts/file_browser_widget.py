@@ -47,11 +47,11 @@ class FileBrowserWidget(QWidget):
 
         self.column.addWidget(self.file_text)
 
-        self.browse_button = QPushButton("Browse")
+        self.browse_button = QPushButton("BROWSE URDF")
         self.browse_button.clicked.connect(self.browse_button_clicked)
         self.column.addWidget(self.browse_button)
 
-        self.load_button = QPushButton("Load")
+        self.load_button = QPushButton("LOAD")
         self.load_button.clicked.connect(self.load_button_clicked)
         self.load_button.setEnabled(False)
         self.column.addWidget(self.load_button)
@@ -112,6 +112,8 @@ class FileBrowserWidget(QWidget):
             self.file_text.setText(self.config_path)
             self.load_button.setEnabled(True)
             self.file_format = "json"
+        elif file_path == "":
+            pass
         else:
             QMessageBox.information(self, "ERROR", "Invalid URDF: " + "\r\n" + file_path)
 

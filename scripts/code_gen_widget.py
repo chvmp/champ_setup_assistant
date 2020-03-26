@@ -51,14 +51,18 @@ class CodeGenWidget(QWidget):
         self.row = QVBoxLayout()
 
         self.tab_label = QLabel("\tGENERATE CONFIGURATION\n")
-        self.tab_label.setFont(QFont("Default", pointSize=12 ,weight=QFont.Bold))
+        self.tab_label.setFont(QFont("Default", pointSize=10 ,weight=QFont.Bold))
         self.tab_label.setAlignment(Qt.AlignCenter)
         self.row.addWidget(self.tab_label)
+
+        self.instructions = QLabel("hello world")
+        self.instructions.setFont(QFont("Default", pointSize=9))
+        self.row.addWidget(self.instructions)
 
         self.robot_name_label =  QLabel("\tRobot Name")
         self.column.addWidget(self.robot_name_label)
         self.robot_name_edit = QLineEdit("")
-        self.robot_name_edit.setFixedWidth(300)
+        # self.robot_name_edit.setFixedWidth(300)
         self.robot_name_edit.textChanged.connect(self.robot_name_edited)
         self.column.addWidget(self.robot_name_edit)
 

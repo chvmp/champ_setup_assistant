@@ -40,7 +40,7 @@ class RvizWidget(QWidget):
 
     def __init__(self, robot_description, file_browser):
         super(QWidget, self).__init__()
-        self.setFixedHeight(400)
+        self.setFixedHeight(300)
 
         rviz_config_path = str(os.path.dirname(sys.path[0]) + "/config/setup_assistant.rviz")
         description_launch_path = str(os.path.dirname(sys.path[0]) + "/launch/description.launch")
