@@ -24,7 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '''
 
-import sys
+import os, sys
 from python_qt_binding.QtGui import *
 from python_qt_binding.QtCore import *
 try:
@@ -42,6 +42,9 @@ from urdf_parser import URDFParser
 class SetupAssistant(QWidget):
     def __init__(self):
         super(QWidget, self).__init__()
+        icon_path = os.path.dirname(sys.modules['__main__'].__file__) + "/../docs/images/champ_icon.png"
+        self.setWindowTitle("CHAMP SETUP ASSISTANT")
+        self.setWindowIcon(QIcon(icon_path))
 
         self.robot = URDFParser()
         self.row = QVBoxLayout()
