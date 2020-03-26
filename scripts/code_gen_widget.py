@@ -73,14 +73,6 @@ class CodeGenWidget(QWidget):
         self.instructions.setFont(QFont("Default", pointSize=9))
         self.row.addWidget(self.instructions)
 
-        # Create the layout
-
-        # Add the QMovie object to the label
-        self.movie.setCacheMode(QMovie.CacheAll)
-        self.movie.setSpeed(100)
-        self.movie_screen.setMovie(self.movie)
-        self.movie.start()
-
         self.robot_name_label =  QLabel("\tRobot Name")
         self.column.addWidget(self.robot_name_label)
         self.robot_name_edit = QLineEdit("")
@@ -102,6 +94,12 @@ class CodeGenWidget(QWidget):
 
         self.row.addLayout(self.column)
         self.setLayout(self.row)
+
+        #Add the QMovie object to the label
+        self.movie.setCacheMode(QMovie.CacheAll)
+        self.movie.setSpeed(100)
+        self.movie_screen.setMovie(self.movie)
+        self.movie.start()
 
         self.workspace_path = ""
         self.package_name = ""
