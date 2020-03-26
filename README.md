@@ -1,6 +1,7 @@
 # CHAMP Setup Assistant
 This software auto generates a configuration package containing all the [files](https://github.com/chvmp/champ_setup_assistant/tree/master/templates) necessary to make CHAMP walk. 
-![Image description](https://github.com/chvmp/champ_setup_assistant/tree/master/docs/images/setup.png)
+
+![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/setup.png)
 ## Installation
 
 1. Clone and install all dependencies:
