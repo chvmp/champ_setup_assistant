@@ -24,7 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '''
 
-import os
+import os, sys
 import shutil
 import json
 
@@ -55,9 +55,31 @@ class CodeGenWidget(QWidget):
         self.tab_label.setAlignment(Qt.AlignCenter)
         self.row.addWidget(self.tab_label)
 
-        self.instructions = QLabel("hello world")
+        #add gif https://gist.github.com/Svenito/4000025
+        img_path = os.path.dirname(sys.modules['__main__'].__file__) + "/../docs/images/champ_running.gif"
+        self.movie = QMovie(img_path, QByteArray(), self)
+        size = self.movie.scaledSize()
+        self.movie_screen = QLabel()
+        self.movie_screen.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.movie_screen.setAlignment(Qt.AlignCenter)
+        self.row.addWidget(self.movie_screen)
+
+        instruction_text =("\n\
+        Enter your robot's name and choose where to save the configuration package(\" Click Browse\"). \n\
+        Click \"Generate\" to create the configuration package.\n\
+        ")
+
+        self.instructions = QLabel(instruction_text)
         self.instructions.setFont(QFont("Default", pointSize=9))
         self.row.addWidget(self.instructions)
+
+        # Create the layout
+
+        # Add the QMovie object to the label
+        self.movie.setCacheMode(QMovie.CacheAll)
+        self.movie.setSpeed(100)
+        self.movie_screen.setMovie(self.movie)
+        self.movie.start()
 
         self.robot_name_label =  QLabel("\tRobot Name")
         self.column.addWidget(self.robot_name_label)
