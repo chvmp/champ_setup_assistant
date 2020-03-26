@@ -174,16 +174,17 @@ class JointConfigurator(QWidget):
         self.setLayout(self.layout)
 
     def on_urdf_path_load(self):
-        self.leg_links_list.show()
-        
-        self.buttons_widget.show()
         self.x_label.hide()
         self.y_label.hide()
         self.z_label.hide()
         self.x_edit.hide()
         self.y_edit.hide()
         self.z_edit.hide()
-        self.setFixedHeight(100)
+        self.leg_links_list.show()
+        self.buttons_widget.show()
+        # self.setFixedHeight(100)
+        self.leg_links_list.setFixedWidth(120)
+        self.leg_links_list.setFixedHeight(50)
 
     def add_button_clicked(self):
         link_name = self.parent.links_list.highlighted_link()
@@ -224,7 +225,7 @@ class LegConfigurator(QWidget):
         self.tab_label = QLabel("\t%s LEG CONFIGURATION\n" % self.leg_name)
         self.tab_label.setFont(QFont("Default", pointSize=10, weight=QFont.Bold))
         self.tab_label.setAlignment(Qt.AlignCenter)
-        instruction_text =("\n\
+        instruction_text =("\
         Add the translation between actuators manually if you don't have a URDF.\n\
         \n\
         HIP               - Translation from center of base to the hip actuator.\n\
@@ -455,7 +456,6 @@ class LegConfiguratorWidget(QWidget):
                 1 - upper leg joint
                 2 - lower leg joint 
                 3 - foot
-
                 where axis is:
                 0 - x
                 1 - y
