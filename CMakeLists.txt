@@ -6,16 +6,16 @@ find_package(catkin REQUIRED
 )
 
 ##set the URL to download
-set(URL "https://github.com/chvmp/visualization")
+set(URL "https://github.com/chvmp/robot_state_plugin")
 set(DOWNLOAD_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../src)
-set(DEPENDENCY_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../visualization)
+set(DEPENDENCY_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../robot_state_plugin)
 
 if (NOT EXISTS "${DEPENDENCY_PATH}")
   message(STATUS "NO visualization")
   message(STATUS "${DOWNLOAD_PATH}")
 
   execute_process(
-    COMMAND git clone ${URL} ${DOWNLOAD_PATH}/visualization
+    COMMAND git clone ${URL} ${DOWNLOAD_PATH}/robot_state_plugin
   )
 endif()
 
