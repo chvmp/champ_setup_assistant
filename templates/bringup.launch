@@ -8,7 +8,7 @@
     <arg name="has_odom"         default="false" />
     <arg name="gazebo"           default="false" />
 
-    <include file="$(find champ_base)/launch/bringup.launch">
+    <include file="$(find champ_bringup)/launch/bringup.launch">
         <arg name="joints_map_file" value="$(arg joints_map_file)"/>
         <arg name="links_map_file" value="$(arg links_map_file)"/>
         <arg name="description_file" value="$(arg description_file)"/>
