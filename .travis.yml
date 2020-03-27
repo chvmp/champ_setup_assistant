@@ -19,6 +19,7 @@ install:
   - source /opt/ros/$ROSDISTRO/setup.bash
   - export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.7/dist-packages
   - mkdir -p catkin_ws/src && cd catkin_ws/src
+  - git clone https://github.com/chvmp/robot_state_plugin
   - git clone https://github.com/chvmp/champ_setup_assistant
   - cd ../
   - rosdep install --from-paths src --ignore-src -r -y
