@@ -325,7 +325,9 @@ class LegConfigurator(QWidget):
         ADDING A LINK\n\
         Select a link from the left pane.\n\
         Click > to add into the leg part.\n\
-        *If there are more than one link in a leg part, select the link nearest to the next leg part.\n\
+        *The link added to a part must be where the axis of rotation is. \n\
+        *This is normally the link that represents the actuator. \n\
+        *Foot links are not visible as there's no mesh attached. \n\
         \n\
         DELETING A LINK\n\
         Click < to clear the leg part.\n\
