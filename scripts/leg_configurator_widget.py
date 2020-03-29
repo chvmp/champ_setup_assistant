@@ -281,13 +281,15 @@ class LegConfigurator(QWidget):
         hip = leg_prefix + "_hip_joint"
         upper_leg = leg_prefix + "_upper_leg_joint"
         lower_leg = leg_prefix + "_lower_leg_joint"
-      
+        foot = leg_prefix + "_foot_joint"
+
         if self.parent.using_urdf:
             hip = self.parent.rviz_widget.robot.get_attached_joint(links[0])
             upper_leg = self.parent.rviz_widget.robot.get_attached_joint(links[1])
             lower_leg = self.parent.rviz_widget.robot.get_attached_joint(links[2])
-           
-        return [hip, upper_leg, lower_leg]
+            foot = self.parent.rviz_widget.robot.get_attached_joint(links[3])
+
+        return [hip, upper_leg, lower_leg, foot]
 
     def get_transform(self):
         if self.parent.using_urdf:
@@ -398,10 +400,10 @@ class LegConfiguratorWidget(QWidget):
                 "right_hind": ["", "", "", ""]
             },
             "joints": {
-                "left_front": ["", "", ""],
-                "right_front": ["", "", ""],
-                "left_hind": ["", "", ""],
-                "right_hind": ["", "", ""]
+                "left_front": ["", "", "", ""],
+                "right_front": ["", "", "", ""],
+                "left_hind": ["", "", "", ""],
+                "right_hind": ["", "", "", ""]
             },
             "firmware": {
                 "transforms": {
