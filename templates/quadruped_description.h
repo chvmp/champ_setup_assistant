@@ -22,10 +22,10 @@ base.rf.lower_leg.setOrigin({{ right_front["lower_leg"][0] }}, {{ right_front["l
       base.lh.hip.setOrigin({{ left_hind["hip"][0] }}, {{ left_hind["hip"][1] }}, {{ left_hind["hip"][2] }}, {{ left_hind["hip"][3] }}, {{ left_hind["hip"][4] }}, {{ left_hind["hip"][5] }});
 base.lh.upper_leg.setOrigin({{ left_hind["upper_leg"][0] }}, {{ left_hind["upper_leg"][1] }}, {{ left_hind["upper_leg"][2] }}, {{ left_hind["upper_leg"][3] }}, {{ left_hind["upper_leg"][4] }}, {{ left_hind["upper_leg"][5] }});
 base.lh.lower_leg.setOrigin({{ left_hind["lower_leg"][0] }}, {{ left_hind["lower_leg"][1] }}, {{ left_hind["lower_leg"][2] }}, {{ left_hind["lower_leg"][3] }}, {{ left_hind["lower_leg"][4] }}, {{ left_hind["lower_leg"][5] }});
-base.lh.lower_leg.setOrigin({{ left_hind["foot"][0] }}, {{ left_hind["foot"][1] }}, {{ left_hind["foot"][2] }}, {{ left_hind["foot"][3] }}, {{ left_hind["foot"][4] }}, {{ left_hind["foot"][5] }});
+     base.lh.foot.setOrigin({{ left_hind["foot"][0] }}, {{ left_hind["foot"][1] }}, {{ left_hind["foot"][2] }}, {{ left_hind["foot"][3] }}, {{ left_hind["foot"][4] }}, {{ left_hind["foot"][5] }});
 
       base.rh.hip.setOrigin({{ right_hind["hip"][0] }}, {{ right_hind["hip"][1] }}, {{ right_hind["hip"][2] }}, {{ right_hind["hip"][3] }}, {{ right_hind["hip"][4] }}, {{ right_hind["hip"][5] }});
-base.lh.upper_leg.setOrigin({{ right_hind["upper_leg"][0] }}, {{ right_hind["upper_leg"][1] }}, {{ right_hind["upper_leg"][2] }}, {{ right_hind["upper_leg"][3] }}, {{ right_hind["upper_leg"][4] }}, {{ right_hind["upper_leg"][5] }});
+base.rh.upper_leg.setOrigin({{ right_hind["upper_leg"][0] }}, {{ right_hind["upper_leg"][1] }}, {{ right_hind["upper_leg"][2] }}, {{ right_hind["upper_leg"][3] }}, {{ right_hind["upper_leg"][4] }}, {{ right_hind["upper_leg"][5] }});
 base.rh.lower_leg.setOrigin({{ right_hind["lower_leg"][0] }}, {{ right_hind["lower_leg"][1] }}, {{ right_hind["lower_leg"][2] }}, {{ right_hind["lower_leg"][3] }}, {{ right_hind["lower_leg"][4] }}, {{ right_hind["lower_leg"][5] }});
      base.rh.foot.setOrigin({{ right_hind["foot"][0] }}, {{ right_hind["foot"][1] }}, {{ right_hind["foot"][2] }}, {{ right_hind["foot"][3] }}, {{ right_hind["foot"][4] }}, {{ right_hind["foot"][5] }});
         }
