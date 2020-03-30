@@ -106,8 +106,9 @@ class CodeGenWidget(QWidget):
         self.robot_name = ""
 
         self.package_path = ""
-        self.package_config_joints_path = ""
-        self.package_config_links_path = ""
+        self.package_joints_map_path = ""
+        self.package_links_map_path = ""
+        self.package_gait_config_path = ""
         self.package_include_path = ""
         self.package_launch_path = ""
         self.package_scripts_path = ""
@@ -183,8 +184,9 @@ class CodeGenWidget(QWidget):
 
     def generate_package_folder(self, ws_src):
         self.package_path = ws_src + "/" + self.package_name
-        self.package_config_joints_path = self.package_path + "/config/joints"
-        self.package_config_links_path = self.package_path + "/config/links"
+        self.package_joints_map_path = self.package_path + "/config/joints"
+        self.package_links_map_path = self.package_path + "/config/links"
+        self.package_gait_config_path = self.package_path + "/config/gait"
         self.package_include_path = self.package_path + "/include"
         self.package_launch_path = self.package_path + "/launch"
         self.package_scripts_path = self.package_path + "/scripts"
@@ -192,8 +194,9 @@ class CodeGenWidget(QWidget):
 
         try:
             os.makedirs(self.package_path)
-            os.makedirs(self.package_config_joints_path)
-            os.makedirs(self.package_config_links_path)
+            os.makedirs(self.package_joints_map_path)
+            os.makedirs(self.package_links_map_path)
+            os.makedirs(self.package_gait_config_path)
             os.makedirs(self.package_include_path)
             os.makedirs(self.package_launch_path)
             os.makedirs(self.package_scripts_path)
@@ -266,8 +269,9 @@ class CodeGenWidget(QWidget):
             self.generate_from_template(self.config, "bringup.launch", self.package_launch_path)
             self.generate_from_template(self.config["firmware"]["transforms"], "quadruped_description.h", self.package_include_path)
             self.generate_from_template(self.config["firmware"]["gait"], "gait_config.h", self.package_include_path)
-            self.generate_from_template(self.config["joints"], "joints.yaml", self.package_config_joints_path)
-            self.generate_from_template(self.config["links"], "links.yaml", self.package_config_links_path)
+            self.generate_from_template(self.config["joints"], "joints.yaml", self.package_joints_map_path)
+            self.generate_from_template(self.config["links"], "links.yaml", self.package_links_map_path)
+            self.generate_from_template(self.config["firmware"]["gait"], "gait.yaml", self.package_gait_config_path)
             self.generate_from_template(self.config, "package.xml", self.package_path)
             self.copy_from_template(self.config)
 
