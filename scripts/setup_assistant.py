@@ -34,10 +34,11 @@ except ImportError:
 
 from file_browser_widget import FileBrowserWidget
 from rviz_widget import RvizWidget
-from leg_configurator_widget import LinkListWidget, LegConfiguratorWidget
+from leg_configurator_widget import LegConfiguratorWidget
 from gait_configurator_widget import GaitConfiguratorWidget
 from code_gen_widget import CodeGenWidget
 from urdf_parser import URDFParser
+from link_list_widget import LinkListWidget
 
 class SetupAssistant(QWidget):
     def __init__(self):
@@ -49,23 +50,23 @@ class SetupAssistant(QWidget):
         self.robot = URDFParser()
         self.row = QVBoxLayout()
 
-        self.file_browser_widget = FileBrowserWidget()
-        self.rviz_widget = RvizWidget(self.robot, self.file_browser_widget)
+        self.file_browser = FileBrowserWidget()
+        self.robot_viz = RvizWidget(self)
 
-        self.links_list = LinkListWidget(self.rviz_widget)
+        self.links_list = LinkListWidget(self)
 
         self.tabs = QTabWidget()
 
-        self.leg_configurator_widget = LegConfiguratorWidget(self.links_list, self.file_browser_widget, self.rviz_widget)
-        self.gait_configurator_widget = GaitConfiguratorWidget(self.file_browser_widget)
-        self.code_gen_widget = CodeGenWidget(self.robot, self.leg_configurator_widget, self.gait_configurator_widget)
+        self.leg_configurator = LegConfiguratorWidget(self)
+        self.gait_configurator = GaitConfiguratorWidget(self)
+        self.code_generator = CodeGenWidget(self)
 
-        self.tabs.addTab(self.leg_configurator_widget, "Leg Configuration")
-        self.tabs.addTab(self.gait_configurator_widget, "Gait Configuration")
-        self.tabs.addTab(self.code_gen_widget, "Generate Config")
+        self.tabs.addTab(self.leg_configurator, "Leg Configuration")
+        self.tabs.addTab(self.gait_configurator, "Gait Configuration")
+        self.tabs.addTab(self.code_generator, "Generate Config")
 
-        self.row.addWidget(self.file_browser_widget)
-        self.row.addWidget(self.rviz_widget)
+        self.row.addWidget(self.file_browser)
+        self.row.addWidget(self.robot_viz)
         self.row.addWidget(self.tabs)
 
         self.setLayout(self.row)

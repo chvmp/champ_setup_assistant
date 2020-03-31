@@ -39,13 +39,10 @@ except ImportError:
 import rospkg
 
 class CodeGenWidget(QWidget):
-    def __init__(self, robot_description, leg_configurator, gait_configurator):
+    def __init__(self, main):
         super(QWidget, self).__init__()
+        self.main = main
         self.proj_path = rospkg.RosPack().get_path('champ_setup_assistant')
-
-        self.robot = robot_description
-        self.leg_configurator = leg_configurator
-        self.gait_configurator = gait_configurator
 
         self.column = QHBoxLayout()
         self.row = QVBoxLayout()
@@ -201,7 +198,7 @@ class CodeGenWidget(QWidget):
             os.makedirs(self.package_launch_path)
             os.makedirs(self.package_scripts_path)
 
-            if not self.leg_configurator.using_urdf:
+            if not self.main.robot_viz.using_urdf:
                 os.makedirs(self.package_urdf_path)
 
         except OSError:
@@ -244,8 +241,8 @@ class CodeGenWidget(QWidget):
         f.close()
 
     def generate_configuration_package(self):
-        leg_configuration = self.leg_configurator.get_configuration()
-        gait_configuration = self.gait_configurator.get_configuration()
+        leg_configuration = self.main.leg_configurator.get_configuration()
+        gait_configuration = self.main.gait_configurator.get_configuration()
 
         if leg_configuration != None:
             self.generate_package_folder(self.workspace_path)
@@ -256,8 +253,8 @@ class CodeGenWidget(QWidget):
             self.config["firmware"]["transforms"] = leg_configuration["firmware"]["transforms"]
             self.config["firmware"]["gait"] = gait_configuration
 
-            if self.leg_configurator.using_urdf:
-                self.config["urdf_path"] = self.robot.path
+            if self.main.robot_viz.using_urdf:
+                self.config["urdf_path"] = self.main.file_browser.urdf_path
                 self.config["default_urdf"] = "False"
             else:
                 self.config["links"]["base"] = "base_link"
