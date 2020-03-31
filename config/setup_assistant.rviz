@@ -4,8 +4,28 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
-        - /Axes1
+        - /RobotState1/Links1/LF_ADAPTER1
+        - /RobotState1/Links1/LF_FOOT1
+        - /RobotState1/Links1/LF_HIP1
+        - /RobotState1/Links1/LF_SHANK1
+        - /RobotState1/Links1/LF_THIGH1
+        - /RobotState1/Links1/LH_ADAPTER1
+        - /RobotState1/Links1/LH_FOOT1
+        - /RobotState1/Links1/LH_HIP1
+        - /RobotState1/Links1/LH_SHANK1
+        - /RobotState1/Links1/LH_THIGH1
+        - /RobotState1/Links1/RF_ADAPTER1
+        - /RobotState1/Links1/RF_FOOT1
+        - /RobotState1/Links1/RF_HIP1
+        - /RobotState1/Links1/RF_SHANK1
+        - /RobotState1/Links1/RF_THIGH1
+        - /RobotState1/Links1/RH_ADAPTER1
+        - /RobotState1/Links1/RH_FOOT1
+        - /RobotState1/Links1/RH_HIP1
+        - /RobotState1/Links1/RH_SHANK1
+        - /RobotState1/Links1/RH_THIGH1
+        - /RobotState1/Links1/base1
+        - /RobotState1/Links1/base_inertia1
       Splitter Ratio: 0.484764546
     Tree Height: 418
   - Class: rviz/Selection
@@ -72,12 +92,122 @@ Visualization Manager:
       Highlight Link: ""
       Links:
         All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: ""
+        Expand Joint Details: true
+        Expand Link Details: true
+        Expand Tree: true
+        LF_ADAPTER:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LF_FOOT:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LF_HIP:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LF_SHANK:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LF_THIGH:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LH_ADAPTER:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LH_FOOT:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LH_HIP:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LH_SHANK:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LH_THIGH:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        Link Tree Style: true
+        RF_ADAPTER:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RF_FOOT:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RF_HIP:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RF_SHANK:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RF_THIGH:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RH_ADAPTER:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RH_FOOT:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RH_HIP:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RH_SHANK:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        RH_THIGH:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        base_inertia:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotState
-      Robot Alpha: 1
+      Robot Alpha: 0.400000006
       Robot Description: robot_description
       Robot State Topic: display_robot_state
       Show All Links: true
@@ -87,7 +217,7 @@ Visualization Manager:
       Visual Enabled: true
     - Class: rviz/Axes
       Enabled: true
-      Length: 1
+      Length: 0.100000001
       Name: Axes
       Radius: 0.00999999978
       Reference Frame: <Fixed Frame>
