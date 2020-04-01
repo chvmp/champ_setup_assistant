@@ -69,6 +69,12 @@ class LegConfigurator(QWidget):
         self.foot_joint = JointConfigurator(self.main, self.leg_name, "FOOT")
         self.column.addWidget(self.foot_joint)
 
+        self.joint_configurators = []
+        self.joint_configurators.append(self.hip_joint)
+        self.joint_configurators.append(self.upper_leg_joint)
+        self.joint_configurators.append(self.lower_leg_joint)
+        self.joint_configurators.append(self.foot_joint)
+
         self.row.addWidget(self.tab_label)
         self.row.addWidget(self.instructions)
         self.row.addLayout(self.column)
