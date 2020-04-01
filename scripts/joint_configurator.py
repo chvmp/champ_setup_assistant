@@ -55,6 +55,8 @@ class AddDeleteButtonWidget(QWidget):
         self.setLayout(self.buttons)
 
 class JointConfigurator(QWidget):
+    link_added = Signal(str)
+    cleared = Signal()
     def __init__(self, main, leg_name, label):
         super(QWidget, self).__init__()
         self.main = main
@@ -75,7 +77,7 @@ class JointConfigurator(QWidget):
 
         self.buttons_widget = AddDeleteButtonWidget()
         self.buttons_widget.add_button.clicked.connect(self.add_button_clicked)
-        self.buttons_widget.delete_button.clicked.connect(self.clear_button_clicked)
+        self.buttons_widget.delete_button.clicked.connect(self.clear)
         self.buttons_widget.setVisible(False)
 
         x_min = -2
@@ -163,30 +165,29 @@ class JointConfigurator(QWidget):
 
     def add_button_clicked(self):
         link_name = self.main.links_list.highlighted_link()
-        if len(link_name) and self.main.links_list.is_selected():
-            self.leg_links_list.addItem(link_name)
-            self.main.links_list.delete_selected_link()
-            self.buttons_widget.add_button.setEnabled(False)
-            
+        ret = self.add_link(link_name)
+        if ret:
             if self.main.links_list.count() > 0:
                 current_selected_link = self.main.links_list.currentItem().text()
                 self.main.robot_viz.highlight_link(current_selected_link)
         else:
             QMessageBox.information(self, "WARN", "No link selected")
-            
 
-    def clear_button_clicked(self):
+    def add_link(self, link_name):
+        if len(link_name):
+            self.clear()
+            self.leg_links_list.add_link(link_name)
+            self.main.links_list.delete_link(link_name)
+            self.buttons_widget.add_button.setEnabled(False)
+            self.link_added.emit(link_name)
+            return True
+        else:
+            return False
+        
+    def clear(self):
         if self.leg_links_list.count():
             link_name = self.leg_links_list.item(0).text()
             self.main.links_list.add_link(link_name)
-            self.leg_links_list.delete_first_link()
+            self.leg_links_list.delete_link(link_name)
             self.buttons_widget.add_button.setEnabled(True)
-        else:
-            QMessageBox.information(self, "WARN", "Leg part is empty")
-
-    def delete_button_clicked(self):
-        link_name = self.leg_links_list.highlighted_link()
-        if len(link_name):
-            self.main.links_list.add_link(link_name)
-            self.leg_links_list.delete_selected_link()
-            self.buttons_widget.add_button.setEnabled(True)
+            self.cleared.emit()
