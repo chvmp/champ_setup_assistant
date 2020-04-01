@@ -95,11 +95,11 @@ class LegConfiguratorWidget(QWidget):
         for link in links:
             joint_name = self.main.robot.get_attached_joint(link)
             if self.main.robot.joint_is_revolute(joint_name):
-                self.main.links_list.addItem(link)
+                self.main.links_list.add_link(link)
                 link_no += 1
                 if link_no % 3 == 0 or link_no == 0:
                     foot_link = self.main.robot.foot_links[foot_no]
-                    self.main.links_list.addItem(foot_link)
+                    self.main.links_list.add_link(foot_link)
                     foot_no += 1
 
 
