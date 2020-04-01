@@ -173,23 +173,69 @@ class URDFParser():
 
         return False
 
-    def has_actuator_in_chain(self, link_name):
+    def get_no_of_actuators(self, link_name):
         joints = self.get_joint_chain(link_name)
+        no_of_actuators = 0
         for joint in joints:
             if self.joint_is_revolute(joint):
-                return True
+                no_of_actuators += 1
         
-        return False
+        return no_of_actuators
 
     def get_end_links(self):
         end_links = []
         for link in self.link_names:
             #check if this link has a child
-            if not self.link_has_child(link) and not self.link_attached_to_base(link) and self.has_actuator_in_chain(link):
+            if not self.link_has_child(link) and not self.link_attached_to_base(link):
                 end_links.append(link)
 
         return end_links
     
+    def remove_manipulator(self, end_links):
+        #this removes a possible manipulator in a list of end links
+        #how this works is it counts the no of actuators of every end link's chain
+        #all leg chains will have the same no of actuators
+        #if an end link has a no of actuator in its chain
+        #that's not equal to the common no of actuators for each leg, it will be removed
+
+        no_of_actuators = []
+        filtered_end_links = []
+        #store no of actuators in each end links chain
+        for link in end_links:
+            no_of_actuators.append(self.get_no_of_actuators(link))
+        
+        #index of this array is the no of actuators
+        #each element is the no of times that no of actuator occured
+        bin_array = np.bincount(no_of_actuators)
+
+        for i in range(len(end_links)):
+            #get no of actuator for an end link's chain
+            chain_actuator_count = no_of_actuators[i]
+            #only add in the new list if it occured 4 times
+            if bin_array[chain_actuator_count] == 4:
+                filtered_end_links.append(end_links[i])
+        
+        return filtered_end_links
+
+    def get_max(self, end_links):
+        #this returns end links with more no of actuators
+
+        new_end_links = []
+        no_of_actuators = []
+
+        #get no of actuators for each link
+        for link in end_links:
+            no_of_actuators.append(self.get_no_of_actuators(link))
+
+        max_actuator_count = max(no_of_actuators)
+
+        #add end_links that only has the max counted no of actuators
+        for i in range(len(end_links)):
+            if no_of_actuators[i] == max_actuator_count:
+                new_end_links.append(end_links[i])
+
+        return new_end_links
+
     def get_foot_links(self):
         def get_common_string(str1,str2):
             #returns common substring between two strings
@@ -211,6 +257,9 @@ class URDFParser():
 
         #get links that has no child
         end_links = self.get_end_links()
+        end_links = self.remove_manipulator(end_links)
+        end_links = self.get_max(end_links)
+
         if len(end_links) == 4:
             foot_name = get_common_string(end_links[0], end_links[3])
             ns =[]
