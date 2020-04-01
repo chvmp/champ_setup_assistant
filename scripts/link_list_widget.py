@@ -34,13 +34,15 @@ except ImportError:
 class LinkListWidget(QListWidget):
     def __init__(self, main):
         super(LinkListWidget, self).__init__()
+        self.setSortingEnabled(True)
         self.main = main
 
         self.itemClicked.connect(self.on_click)
         # self.highlighted_link = None
 
     def add_link(self, link_name):
-        if link_name:
+
+        if self.link_exists(link_name):
             items_list = self.findItems(link_name, Qt.MatchExactly)
             if not items_list:
                 self.addItem(link_name)
@@ -88,4 +90,11 @@ class LinkListWidget(QListWidget):
             item = self.item(i)
             if item.isSelected():
                 return True
+        return False
+
+    def link_exists(self, link_name):
+        for link in self.main.robot.link_names:
+            if link.count(link_name):
+                return True
+
         return False
