@@ -37,14 +37,20 @@ class LinkListWidget(QListWidget):
         self.main = main
 
         self.itemClicked.connect(self.on_click)
-        self.prev_highlighted_link = None
+        # self.highlighted_link = None
 
-    def add_link(self, link):
-        if link:
-            items_list = self.findItems(link, Qt.MatchExactly)
+    def add_link(self, link_name):
+        if link_name:
+            items_list = self.findItems(link_name, Qt.MatchExactly)
             if not items_list:
-                self.addItem(link)
+                self.addItem(link_name)
                 # self.clear_highlight()
+    
+    def delete_link(self, link_name):
+        links_list = self.findItems(link_name, Qt.MatchExactly)
+        for link in links_list:
+            mathced_link = self.row(link)
+            self.takeItem(mathced_link)
 
     def delete_selected_link(self):
         link_name = self.highlighted_link()
