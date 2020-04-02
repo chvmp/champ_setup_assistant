@@ -239,7 +239,7 @@ class URDFParser():
     def get_foot_links(self):
         def get_common_string(str1,str2):
             #returns common substring between two strings
-            #https://www.geeksforgeeks.org/sequencematcher-in-python-for-longest-common-substring/
+            #https://www.geeksforgeeks.org/sequencematcher-in-python-for-longest-common-substring
             # initialize SequenceMatcher object with  
             # input string 
             seqMatch = SequenceMatcher(None,str1,str2) 
@@ -260,37 +260,9 @@ class URDFParser():
         end_links = self.remove_manipulator(end_links)
         end_links = self.get_max(end_links)
 
-        if len(end_links) == 4:
-            foot_name = get_common_string(end_links[0], end_links[3])
-            ns =[]
-            for link in end_links:
-                ns.append(link.replace(foot_name, ""))
+        foot_name = get_common_string(end_links[0], end_links[3])
+        ns =[]
+        for link in end_links:
+            ns.append(link.replace(foot_name, ""))
 
-            return end_links, ns
-
-        else:
-            common_substrings = []
-            #iterate all end links to each other
-            for i in  end_links:
-                for ii in end_links:
-                    #get common substring between two link names
-                    common = get_common_string(i, ii)
-
-                    #make sure it's not some giberrish string
-                    if len(common) > 3:
-                        common_substrings.append(get_common_string(i, ii))
-            #count the most no of occurance in the collected substrings
-            strings, indices = np.unique(common_substrings, return_counts=True)
-            #name of the link without ns / identifier
-            foot_name = strings[0] 
-        
-            foot_links = []
-            ns = []
-            for link in end_links:
-                #check if the footname matches the end_links
-                if link.count(foot_name):
-                    foot_links.append(link)
-                    #remove footname on the link name to get namespace
-                    ns.append(link.replace(foot_name, ""))
-
-            return foot_links, ns
+        return end_links, ns
