@@ -52,7 +52,8 @@ class LegConfigurator(QWidget):
         self.tab_label.setFont(QFont("Default", pointSize=10, weight=QFont.Bold))
         self.tab_label.setAlignment(Qt.AlignCenter)
         instruction_text =("\
-        Add the translation between actuators manually if you don't have a URDF.\n\
+        Add the translation between actuators. As you key in the configurations for the left-front leg, the\n\
+        rest of the legs automatically configures.\n\
         \n\
         HIP               - Translation from center of base to the hip actuator.\n\
         UPPER LEG   - Translation from the hip actuator to the upper leg actuator.\n\

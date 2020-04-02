@@ -52,8 +52,10 @@ class SetupAssistant(QWidget):
 
         self.file_browser = FileBrowserWidget()
         self.robot_viz = RvizWidget(self)
+        self.robot_viz.setVisible(False)
 
         self.links_list = LinkListWidget(self)
+        self.links_list.setVisible(False)
 
         self.tabs = QTabWidget()
 

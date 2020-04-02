@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-Copyright (c) 2119-2121, Juan Miguel Jimeno
+Copyright (c) 21300-2121, Juan Miguel Jimeno
 All rights reserved.
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -48,42 +48,52 @@ class URDFConfigPredict(QWidget):
         self.row = QVBoxLayout()
 
         self.tab_label = QLabel("\tLEG AUTO CONFIGURATION\n")
-        self.tab_label.setFont(QFont("Default", pointSize=11, weight=QFont.Bold))
+        self.tab_label.setFont(QFont("Default", pointSize=10, weight=QFont.Bold))
         self.tab_label.setAlignment(Qt.AlignCenter)
 
+        instructions_text =("\
+        Choose the correct namespace for all the legs to help the robot identify which unique identifier \n\
+        belongs to each leg. The auto configuration will only work once all namespaces have been defined.\n\
+        \n\
+        For instance, if your foot links are named as lf_foot, rf_foot, lh_foot, and rh_foot,\n\
+        namespaces will be parsed as lf_f, rf_,f lh_f and rh_f.\n\
+        ")
+        self.instructions = QLabel(instructions_text)
+        self.instructions.setFont(QFont("Default", pointSize=9))
+
         self.left_front_hint_l = QLabel("\tLEFT FRONT NS")
-        self.left_front_hint_l.setFont(QFont("Default", pointSize=11))
+        self.left_front_hint_l.setFont(QFont("Default", pointSize=9))
         self.left_front_hint_l.setAlignment(Qt.AlignCenter)
         self.left_front_hint = QComboBox()
         self.left_front_hint.addItem("")
-        self.left_front_hint.setFixedWidth(111)
+        self.left_front_hint.setFixedWidth(130)
         self.left_front_hint.currentIndexChanged.connect(self.lf_clicked)
         self.hint_row.addRow(self.left_front_hint_l, self.left_front_hint)
 
         self.right_front_hint_l = QLabel("\tRIGHT FRONT NS")
-        self.right_front_hint_l.setFont(QFont("Default", pointSize=11))
+        self.right_front_hint_l.setFont(QFont("Default", pointSize=9))
         self.right_front_hint_l.setAlignment(Qt.AlignCenter)
         self.right_front_hint = QComboBox()
         self.right_front_hint.addItem("")
-        self.right_front_hint.setFixedWidth(111)
+        self.right_front_hint.setFixedWidth(130)
         self.right_front_hint.currentIndexChanged.connect(self.rf_clicked)
         self.hint_row.addRow(self.right_front_hint_l, self.right_front_hint)
 
         self.left_hind_hint_l = QLabel("\tLEFT HIND NS")
-        self.left_hind_hint_l.setFont(QFont("Default", pointSize=11))
+        self.left_hind_hint_l.setFont(QFont("Default", pointSize=9))
         self.left_hind_hint_l.setAlignment(Qt.AlignCenter)
         self.left_hind_hint = QComboBox()
         self.left_hind_hint.addItem("")
-        self.left_hind_hint.setFixedWidth(111)
+        self.left_hind_hint.setFixedWidth(130)
         self.left_hind_hint.currentIndexChanged.connect(self.lh_clicked)
         self.hint_row.addRow(self.left_hind_hint_l, self.left_hind_hint)
 
         self.right_hind_hint_l = QLabel("\tRIGHT HIND NS")
-        self.right_hind_hint_l.setFont(QFont("Default", pointSize=11))
+        self.right_hind_hint_l.setFont(QFont("Default", pointSize=9))
         self.right_hind_hint_l.setAlignment(Qt.AlignCenter)
         self.right_hind_hint = QComboBox()
         self.right_hind_hint.addItem("")
-        self.right_hind_hint.setFixedWidth(111)
+        self.right_hind_hint.setFixedWidth(130)
         self.right_hind_hint.currentIndexChanged.connect(self.rh_clicked)
         self.hint_row.addRow(self.right_hind_hint_l, self.right_hind_hint)
 
@@ -96,6 +106,7 @@ class URDFConfigPredict(QWidget):
         self.hints.append(self.right_hind_hint)
 
         self.row.addWidget(self.tab_label)
+        self.row.addWidget(self.instructions)
         self.row.addLayout(self.hint_column)
         self.row.addLayout(self.joint_column)
 
@@ -162,6 +173,9 @@ class URDFConfigPredict(QWidget):
                     self.main.leg_configurator.leg_configurators[leg_id].joint_configurators[i].clear()
                     self.main.leg_configurator.leg_configurators[leg_id].joint_configurators[i].add_link(link_chain[i])
                     self.main.links_list.clear()
+
+            QMessageBox.information(self, "SUCCESS", "Auto configuration complete. You can check the rest of the configuration by clicking the leg tabs.")
+
             return True
 
         else:
@@ -173,91 +187,41 @@ class URDFConfigPredict(QWidget):
             self.main.leg_configurator.leg_configurators[leg_id].joint_configurators[part_id].clear()
 
 class ConfigPredict(QWidget):
-    def __init__(self, main):
+    def __init__(self, main, lf_configurator):
         super(QWidget, self).__init__()
 
         self.main = main
-        self.main.robot_viz.urdf_loaded.connect(self.on_urdf_path_load)
+        self.lf_configurator = lf_configurator
 
         self.row = QVBoxLayout()
-        self.joint_column = QHBoxLayout()
 
         self.config_predict = URDFConfigPredict(main)
-        self.config_predict.setVisible(False)
+
         self.row.addWidget(self.config_predict)
 
-        self.tab_label = QLabel("\tLEG AUTO CONFIGURATION\n")
-        self.tab_label.setFont(QFont("Default", pointSize=11, weight=QFont.Bold))
-        self.tab_label.setAlignment(Qt.AlignCenter)
-
-        instruction_text =("\
-        Add the translation between actuators manually if you don't have a URDF.\n\
-        Key in the parameters for of your robot's front-left leg. The auto configurator \n\
-        will automatically update the rest of the legs.\n\
-        \n\
-        HIP               - Translation from center of base to the hip actuator.\n\
-        UPPER LEG   - Translation from the hip actuator to the upper leg actuator.\n\
-        LOWER LEG  - Translation from the upper leg actuator to the lower leg actuator.\n\
-        FOOT            - Translation from the lower leg actuator to the foot.\n\
-        ")
-
-        self.instructions = QLabel(instruction_text)
-        self.instructions.setFont(QFont("Default", pointSize=9))
-
-        self.hip_joint = JointConfigurator(self.main, 0, 0)
-        self.hip_joint.translation_updated.connect(self.hip_link_added)
-        self.joint_column.addWidget(self.hip_joint)
-
-        self.upper_leg_joint = JointConfigurator(self.main, 0, 1)
-        self.upper_leg_joint.translation_updated.connect(self.upper_leg_link_added)
-        self.joint_column.addWidget(self.upper_leg_joint)
-
-        self.lower_leg_joint = JointConfigurator(self.main, 0, 2)
-        self.lower_leg_joint.translation_updated.connect(self.lower_leg_link_added)
-        self.joint_column.addWidget(self.lower_leg_joint)
-
-        self.foot_joint = JointConfigurator(self.main, 0, 3)
-        self.foot_joint.translation_updated.connect(self.foot_link_added)
-        self.joint_column.addWidget(self.foot_joint)
-
-        self.row.addWidget(self.tab_label)
-        self.row.addWidget(self.instructions)
-        self.row.addLayout(self.joint_column)
-
-        self.joint_configurators = []
-        self.joint_configurators.append(self.hip_joint)
-        self.joint_configurators.append(self.upper_leg_joint)
-        self.joint_configurators.append(self.lower_leg_joint)
-        self.joint_configurators.append(self.foot_joint)
-        
+        self.lf_configurator.hip_joint.translation_updated.connect(self.hip_defined)
+        self.lf_configurator.upper_leg_joint.translation_updated.connect(self.upper_leg_defined)
+        self.lf_configurator.lower_leg_joint.translation_updated.connect(self.lower_leg_defined)
+        self.lf_configurator.foot_joint.translation_updated.connect(self.foot_defined)
+   
         self.setLayout(self.row)
-
-    def on_urdf_path_load(self):
-        self.tab_label.setVisible(False)
-
-        self.config_predict.setVisible(True)
-        self.instructions.setVisible(False)
-        self.hip_joint.setVisible(False)
-        self.upper_leg_joint.setVisible(False)
-        self.lower_leg_joint.setVisible(False)
-        self.foot_joint.setVisible(False)
                 
-    def hip_link_added(self, leg_id, part_id, axis, val):
+    def hip_defined(self, leg_id, part_id, axis, val):
         for i in range(4):
             trans = self.inverse_val(i, part_id, axis, val)
             self.main.leg_configurator.leg_configurators[i].joint_configurators[part_id].origin[axis].setValue(trans)
 
-    def upper_leg_link_added(self, leg_id, part_id, axis, val):
+    def upper_leg_defined(self, leg_id, part_id, axis, val):
         for i in range(4):
             trans = self.inverse_val(i, part_id, axis, val)
             self.main.leg_configurator.leg_configurators[i].joint_configurators[part_id].origin[axis].setValue(trans)
 
-    def lower_leg_link_added(self, leg_id, part_id, axis, val):
+    def lower_leg_defined(self, leg_id, part_id, axis, val):
         for i in range(4):
             trans = self.inverse_val(i, part_id, axis, val)
             self.main.leg_configurator.leg_configurators[i].joint_configurators[part_id].origin[axis].setValue(trans)
 
-    def foot_link_added(self, leg_id, part_id, axis, val):
+    def foot_defined(self, leg_id, part_id, axis, val):
         for i in range(4):
             trans = self.inverse_val(i, part_id, axis, val)
             self.main.leg_configurator.leg_configurators[i].joint_configurators[part_id].origin[axis].setValue(trans)

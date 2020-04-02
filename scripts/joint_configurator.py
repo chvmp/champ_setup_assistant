@@ -117,6 +117,8 @@ class JointConfigurator(QWidget):
         self.x_edit.setSingleStep(0.001)
         self.x_edit.setRange(x_min,x_max)
         self.x_edit.setDecimals(4)
+        self.x_edit.setFixedWidth(90)
+        self.x_edit.setFixedHeight(30)
         self.x_edit.valueChanged.connect(self.trans_x_changed)
 
         self.y_label = QLabel("y :")
@@ -126,6 +128,8 @@ class JointConfigurator(QWidget):
         self.y_edit.setSingleStep(0.001)
         self.y_edit.setRange(y_min,y_max)
         self.y_edit.setDecimals(4)
+        self.y_edit.setFixedWidth(90)
+        self.y_edit.setFixedHeight(30)
         self.y_edit.valueChanged.connect(self.trans_y_changed)
 
         z_max = 2
@@ -141,6 +145,8 @@ class JointConfigurator(QWidget):
         self.z_edit.setSingleStep(0.001)
         self.z_edit.setRange(-2, z_max)
         self.z_edit.setDecimals(4)
+        self.z_edit.setFixedWidth(90)
+        self.z_edit.setFixedHeight(30)
         self.z_edit.valueChanged.connect(self.trans_z_changed)
 
         self.origin = []

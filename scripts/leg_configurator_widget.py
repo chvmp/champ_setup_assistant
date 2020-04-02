@@ -57,6 +57,7 @@ class LegConfiguratorWidget(QWidget):
 
         self.links_label = QLabel("LINKS")
         self.links_label.setAlignment(Qt.AlignCenter)
+        self.links_label.setVisible(False)
         self.list_stack_row.addWidget(self.links_label)
 
         self.list_stack_row.addWidget(self.main.links_list)
@@ -64,7 +65,6 @@ class LegConfiguratorWidget(QWidget):
         self.main.links_list.setFont(QFont("Default", pointSize=10))
         # self.main.links_list.setFixedHeight(400)
 
-        self.config_predict = ConfigPredict(main)
         self.lf_configurator = LegConfigurator(main, 0)
         self.rf_configurator = LegConfigurator(main, 1)
         self.lh_configurator = LegConfigurator(main, 2)
@@ -77,8 +77,9 @@ class LegConfiguratorWidget(QWidget):
         self.leg_configurators.append(self.lh_configurator)
         self.leg_configurators.append(self.rh_configurator)
 
+        self.config_predict = ConfigPredict(main, self.lf_configurator)
+
         self.leg_tabs = QTabWidget()
-        self.leg_tabs.addTab(self.config_predict,  "Configuration")
         self.leg_tabs.addTab(self.lf_configurator, "Left Front Leg")
         self.leg_tabs.addTab(self.lf_configurator, "Left Front Leg")
         self.leg_tabs.addTab(self.rf_configurator, "Right Front Leg")
@@ -91,6 +92,12 @@ class LegConfiguratorWidget(QWidget):
         self.setLayout(self.column)
 
     def on_urdf_path_load(self):
+        self.leg_tabs.insertTab(0, self.config_predict,  "Configuration")
+        self.leg_tabs.setCurrentIndex(0)
+        self.links_label.setVisible(True)
+        self.main.links_list.setVisible(True)
+        self.main.robot_viz.setVisible(True)
+
         links = self.main.robot.link_names
         link_no = 0
         foot_no = 0
@@ -108,7 +115,6 @@ class LegConfiguratorWidget(QWidget):
 
 
     def get_configuration(self):
-        
         leg_configuration = {
             "links": {
                 "base": "",
