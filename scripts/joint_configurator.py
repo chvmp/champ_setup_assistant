@@ -55,26 +55,31 @@ class AddDeleteButtonWidget(QWidget):
         self.setLayout(self.buttons)
 
 class JointConfigurator(QWidget):
-    link_added = Signal(str)
-    cleared = Signal()
-    def __init__(self, main, leg_name, label):
+    link_added = Signal(str, int, int)
+    translation_updated = Signal(int, int, int, float)
+
+    def __init__(self, main, leg_id, part_id):
         super(QWidget, self).__init__()
         self.main = main
+        self.leg_id = leg_id
+        self.part_id = part_id
         self.main.robot_viz.urdf_loaded.connect(self.on_urdf_path_load)
         self.setFont(QFont("Default", pointSize=9))
         self.setFixedWidth(150)
+
+        link_names = ["HIP", "UPPER_LEG", "LOWER_LEG", "FOOT"]
+        leg_names = ["LEFT FRONT", "RIGHT FRONT", "LEFT HIND", "HIP"]
 
         self.column = QHBoxLayout()
         self.row = QVBoxLayout()
         self.layout = QGridLayout()
 
-        self.link_label = QLabel(label)
+        self.link_label = QLabel(link_names[part_id])
         self.link_label.setFont(QFont("Default", pointSize=9))
         self.link_label.setAlignment(Qt.AlignCenter)
 
         self.leg_links_list = LinkListWidget(self.main)
         self.leg_links_list.setVisible(False)
-
         self.buttons_widget = AddDeleteButtonWidget()
         self.buttons_widget.add_button.clicked.connect(self.add_button_clicked)
         self.buttons_widget.delete_button.clicked.connect(self.clear)
@@ -84,22 +89,22 @@ class JointConfigurator(QWidget):
         x_max = 2
         y_min = -2
         y_max = 2
-        if leg_name == "LEFT FRONT" and label == "HIP":
+        if leg_id == 0 and part_id == 0:
             x_min = 0
             x_max = 2
             y_min = 0
             y_max = 2
-        elif leg_name == "RIGHT FRONT" and label == "HIP":
+        elif leg_id == 1 and part_id == 0:
             x_min = 0
             x_max = 2
             y_min = -2
             y_max = 0
-        elif leg_name == "LEFT HIND" and label == "HIP":
+        elif leg_id == 2 and part_id == 0:
             x_min = -2
             x_max = 0
             y_min = 0
             y_max = 2
-        elif leg_name == "RIGHT HIND" and label == "HIP":
+        elif leg_id == 3 and part_id == 0:
             x_min = -2
             x_max = 0
             y_min = -2
@@ -111,7 +116,8 @@ class JointConfigurator(QWidget):
         self.x_edit = QDoubleSpinBox()
         self.x_edit.setSingleStep(0.001)
         self.x_edit.setRange(x_min,x_max)
-        self.x_edit.setDecimals(3)
+        self.x_edit.setDecimals(4)
+        self.x_edit.valueChanged.connect(self.trans_x_changed)
 
         self.y_label = QLabel("y :")
         self.y_label.setFont(QFont("Default", pointSize=9))
@@ -119,12 +125,13 @@ class JointConfigurator(QWidget):
         self.y_edit = QDoubleSpinBox()
         self.y_edit.setSingleStep(0.001)
         self.y_edit.setRange(y_min,y_max)
-        self.y_edit.setDecimals(3)
+        self.y_edit.setDecimals(4)
+        self.y_edit.valueChanged.connect(self.trans_y_changed)
 
         z_max = 2
-        if label == "LOWER LEG":
+        if part_id == 2:
             z_max = 0
-        elif label == "FOOT":
+        elif part_id == 3:
             z_max = 0
 
         self.z_label = QLabel("z :")
@@ -133,7 +140,13 @@ class JointConfigurator(QWidget):
         self.z_edit = QDoubleSpinBox()
         self.z_edit.setSingleStep(0.001)
         self.z_edit.setRange(-2, z_max)
-        self.z_edit.setDecimals(3)
+        self.z_edit.setDecimals(4)
+        self.z_edit.valueChanged.connect(self.trans_z_changed)
+
+        self.origin = []
+        self.origin.append(self.x_edit)
+        self.origin.append(self.y_edit)
+        self.origin.append(self.z_edit)
 
         self.layout.addWidget(self.link_label, 0, 1)
         self.layout.addWidget(self.buttons_widget, 1, 0)
@@ -150,6 +163,18 @@ class JointConfigurator(QWidget):
 
         self.setLayout(self.layout)
 
+    def trans_x_changed(self):
+        val = self.x_edit.value()
+        self.translation_updated.emit(self.leg_id, self.part_id, 0, val)
+
+    def trans_y_changed(self):
+        val = self.y_edit.value()
+        self.translation_updated.emit(self.leg_id, self.part_id, 1, val)  
+
+    def trans_z_changed(self):
+        val = self.z_edit.value()
+        self.translation_updated.emit(self.leg_id, self.part_id, 2, val)  
+
     def on_urdf_path_load(self):
         self.x_label.hide()
         self.y_label.hide()
@@ -165,6 +190,7 @@ class JointConfigurator(QWidget):
 
     def add_button_clicked(self):
         link_name = self.main.links_list.highlighted_link()
+        self.link_added.emit(link_name, self.leg_id, self.part_id)
         ret = self.add_link(link_name)
         if ret:
             if self.main.links_list.count() > 0:
@@ -179,15 +205,16 @@ class JointConfigurator(QWidget):
             self.leg_links_list.add_link(link_name)
             self.main.links_list.delete_link(link_name)
             self.buttons_widget.add_button.setEnabled(False)
-            self.link_added.emit(link_name)
             return True
         else:
             return False
         
     def clear(self):
-        if self.leg_links_list.count():
+        if len(self.leg_links_list):
+            i = self.leg_links_list.currentRow()
             link_name = self.leg_links_list.item(0).text()
-            self.main.links_list.add_link(link_name)
             self.leg_links_list.delete_link(link_name)
+            self.main.links_list.add_link(link_name)
             self.buttons_widget.add_button.setEnabled(True)
-            self.cleared.emit()
+
+    

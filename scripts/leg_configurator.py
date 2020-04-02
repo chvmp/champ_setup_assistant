@@ -34,18 +34,21 @@ except ImportError:
 from joint_configurator import JointConfigurator
 
 class LegConfigurator(QWidget):
-    def __init__(self, main, leg_name):
+    link_added = Signal(str, int, int)
+    
+    def __init__(self, main, leg_id):
         super(QWidget, self).__init__()
         self.main = main
+        self.leg_id = leg_id
 
         self.main.robot_viz.urdf_loaded.connect(self.on_urdf_path_load)
 
-        self.leg_name = leg_name
+        self.leg_names = ["LEFT FRONT", "RIGHT FRONT", "LEFT HIND", "RIGHT HIND"]
 
         self.column = QHBoxLayout()
         self.row = QVBoxLayout()
 
-        self.tab_label = QLabel("\t%s LEG CONFIGURATION\n" % self.leg_name)
+        self.tab_label = QLabel("\t%s LEG CONFIGURATION\n" % self.leg_names[leg_id])
         self.tab_label.setFont(QFont("Default", pointSize=10, weight=QFont.Bold))
         self.tab_label.setAlignment(Qt.AlignCenter)
         instruction_text =("\
@@ -60,13 +63,20 @@ class LegConfigurator(QWidget):
         self.instructions = QLabel(instruction_text)
         self.instructions.setFont(QFont("Default", pointSize=9))
 
-        self.hip_joint = JointConfigurator(self.main, self.leg_name, "HIP")
+        self.hip_joint = JointConfigurator(self.main, self.leg_id, 0)
+        self.hip_joint.link_added.connect(self.hip_link_added)
         self.column.addWidget(self.hip_joint)
-        self.upper_leg_joint = JointConfigurator(self.main, self.leg_name, "UPPER LEG")
+
+        self.upper_leg_joint = JointConfigurator(self.main, self.leg_id, 1)
+        self.upper_leg_joint.link_added.connect(self.upper_leg_link_added)
         self.column.addWidget(self.upper_leg_joint)
-        self.lower_leg_joint = JointConfigurator(self.main, self.leg_name, "LOWER LEG")
+
+        self.lower_leg_joint = JointConfigurator(self.main, self.leg_id, 2)
+        self.lower_leg_joint.link_added.connect(self.lower_leg_link_added)
         self.column.addWidget(self.lower_leg_joint)
-        self.foot_joint = JointConfigurator(self.main, self.leg_name, "FOOT")
+
+        self.foot_joint = JointConfigurator(self.main, self.leg_id, 3)
+        self.foot_joint.link_added.connect(self.foot_link_added)
         self.column.addWidget(self.foot_joint)
 
         self.joint_configurators = []
@@ -81,10 +91,21 @@ class LegConfigurator(QWidget):
 
         self.setLayout(self.row)
 
+    def hip_link_added(self, link_name, leg_id, part_id):
+        self.link_added.emit(link_name, leg_id, part_id)
+        
+    def upper_leg_link_added(self, link_name, leg_id, part_idlf):   
+        self.link_added.emit(link_name, leg_id, part_id)
+
+    def lower_leg_link_added(self, link_name, leg_id, part_idf):
+        self.link_added.emit(link_name, leg_id, part_id)
+
+    def foot_link_added(self, link_name, leg_id, part_idf):
+        self.link_added.emit(link_name, leg_id, part_id)
+
     def get_prefix(self):
-        leg_names = ["LEFT FRONT", "RIGHT FRONT", "LEFT HIND", "RIGHT HIND"]
         leg_prefixes = ["lf", "rf", "lh", "rh"]
-        return leg_prefixes[leg_names.index(self.leg_name)]
+        return leg_prefixes[self.leg_id]
 
     def get_leg_links(self):
         leg_prefix = self.get_prefix()

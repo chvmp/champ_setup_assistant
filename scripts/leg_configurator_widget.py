@@ -46,6 +46,8 @@ class LegConfiguratorWidget(QWidget):
 
         self.column = QHBoxLayout()
     
+        self.links_list = []
+
         self.lf_links_column = QHBoxLayout()
         self.rf_links_column = QHBoxLayout()
         self.lh_links_column = QHBoxLayout()
@@ -63,10 +65,10 @@ class LegConfiguratorWidget(QWidget):
         # self.main.links_list.setFixedHeight(400)
 
         self.config_predict = ConfigPredict(main)
-        self.lf_configurator = LegConfigurator(main, "LEFT FRONT")
-        self.rf_configurator = LegConfigurator(main, "RIGHT FRONT")
-        self.lh_configurator = LegConfigurator(main, "LEFT HIND")
-        self.rh_configurator = LegConfigurator(main, "RIGHT HIND")
+        self.lf_configurator = LegConfigurator(main, 0)
+        self.rf_configurator = LegConfigurator(main, 1)
+        self.lh_configurator = LegConfigurator(main, 2)
+        self.rh_configurator = LegConfigurator(main, 3)
 
         self.leg_configurators = []
 
@@ -96,9 +98,11 @@ class LegConfiguratorWidget(QWidget):
             joint_name = self.main.robot.get_attached_joint(link)
             if self.main.robot.joint_is_revolute(joint_name):
                 self.main.links_list.add_link(link)
+                self.links_list.append(link)
                 link_no += 1
                 if link_no % 3 == 0 or link_no == 0:
                     foot_link = self.main.robot.foot_links[foot_no]
+                    self.links_list.append(foot_link)
                     self.main.links_list.add_link(foot_link)
                     foot_no += 1
 
