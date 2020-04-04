@@ -7,7 +7,6 @@ This software auto generates a configuration package containing all the [files](
 1. Clone and install all dependencies:
 
         cd <your_ws>/src
-        git clone https://github.com/chvmp/robot_state_plugin
         git clone https://github.com/chvmp/champ_setup_assistant
         cd <your_ws>
         rosdep install --from-paths src --ignore-src -r -y
