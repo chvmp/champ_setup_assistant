@@ -6,9 +6,10 @@ This software auto generates a configuration package containing all the [files](
 
 1. Clone and install all dependencies:
 
+        sudo apt install -y python-rosdep
         cd <your_ws>/src
         git clone https://github.com/chvmp/champ_setup_assistant
-        cd <your_ws>
+        cd ..
         rosdep install --from-paths src --ignore-src -r -y
 
 2.  Build your workspace:
