@@ -11,7 +11,7 @@
     <buildtool_depend>catkin</buildtool_depend>
     <exec_depend>rviz</exec_depend>
     <exec_depend>moveit_ros_planning_interface</exec_depend>
-    <exec_depend>python-jinja2</exec_depend>
+    <exec_depend>python3-jinja2</exec_depend>
     <exec_depend>python_qt_binding</exec_depend>
     <exec_depend>urdfdom_py</exec_depend>
 
@@ -25,5 +25,6 @@
     <build_export_depend>rospy</build_export_depend>
     <build_export_depend>rviz</build_export_depend>
     <build_export_depend>tf</build_export_depend>
+    
 </package>
 
