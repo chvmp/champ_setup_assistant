@@ -24,4 +24,4 @@ This software auto generates a configuration package containing all the [files](
 
         roslaunch champ_setup_assistant setup_assistant.launch 
 
-Configure your robot by loading a URDF or manually key in the configuration parameters. If you don't have any URDF now, you can download ANYmal's [URDF](https://github.com/chvmp/anymal_b_simple_description/tree/master/urdf) just to try the package.
+Configure your robot by loading a URDF or manually key in the configuration parameters. If you don't have any URDF now, you can download [ANYmal](https://github.com/chvmp/anymal_b_simple_description/tree/master/urdf) or [SpotMicro](https://github.com/chvmp/spotmicro_description/blob/master/urdf/spotmicroai.urdf) just to try the package.
