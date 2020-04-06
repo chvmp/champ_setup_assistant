@@ -5,6 +5,11 @@ find_package(catkin
     REQUIRED
     COMPONENTS
 )
+catkin_package(
+    INCLUDE_DIRS
+    LIBRARIES
+    CATKIN_DEPENDS
+)
 
 set(URL "https://github.com/chvmp/robot_state_plugin")
 set(DOWNLOAD_PATH ${CMAKE_CURRENT_SOURCE_DIR}/..)
@@ -23,3 +28,7 @@ if (NOT EXISTS "${DEPENDENCY_PATH}")
   )
 endif()
  
+install(PROGRAMS
+  scripts/setup_assistant.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
