@@ -10,21 +10,18 @@
 
     <buildtool_depend>catkin</buildtool_depend>
     <exec_depend>rviz</exec_depend>
-    <exec_depend>moveit_ros_planning_interface</exec_depend>
     <exec_depend>python-jinja2</exec_depend>
     <exec_depend>python_qt_binding</exec_depend>
     <exec_depend>urdfdom_py</exec_depend>
 
+    <build_export_depend>libogre-dev</build_export_depend>
+    <build_export_depend>qtbase5-dev</build_export_depend>
+    <build_export_depend>libqt5-opengl-dev</build_export_depend>
     <build_export_depend>class_loader</build_export_depend>
-    <build_export_depend>eigen_conversions</build_export_depend>
-    <build_export_depend>geometric_shapes</build_export_depend>
     <build_export_depend>moveit_ros_planning_interface</build_export_depend>
-    <build_export_depend>pluginlib</build_export_depend>
-    <build_export_depend>rosconsole</build_export_depend>
+    <build_export_depend version_gte="1.11.2">pluginlib</build_export_depend>
     <build_export_depend>roscpp</build_export_depend>
-    <build_export_depend>rospy</build_export_depend>
-    <build_export_depend>rviz</build_export_depend>
-    <build_export_depend>tf</build_export_depend>
-
+    <build_export_depend>rviz</build_export_depend> 
+    
 </package>
 
