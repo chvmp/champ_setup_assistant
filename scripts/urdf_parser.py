@@ -168,7 +168,7 @@ class URDFParser():
     def joint_is_revolute(self, joint_name):
         for joint in self.joints:
             if joint.name == joint_name:
-                if joint.type == "revolute":
+                if joint.type == "revolute" or joint.type == "continuous":
                     return True
 
         return False
