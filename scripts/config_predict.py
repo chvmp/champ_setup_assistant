@@ -136,7 +136,7 @@ class URDFConfigPredict(QWidget):
             self.right_hind_hint.addItem(ns[i])
 
     def lf_clicked(self):
-        self.update_namespaces(self.hints[1].currentText(), 1)
+        self.update_namespaces(self.hints[0].currentText(), 0)
 
     def rf_clicked(self):
         self.update_namespaces(self.hints[1].currentText(), 1)
