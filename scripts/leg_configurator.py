@@ -95,13 +95,13 @@ class LegConfigurator(QWidget):
     def hip_link_added(self, link_name, leg_id, part_id):
         self.link_added.emit(link_name, leg_id, part_id)
         
-    def upper_leg_link_added(self, link_name, leg_id, part_idlf):   
+    def upper_leg_link_added(self, link_name, leg_id, part_id):   
         self.link_added.emit(link_name, leg_id, part_id)
 
-    def lower_leg_link_added(self, link_name, leg_id, part_idf):
+    def lower_leg_link_added(self, link_name, leg_id, part_id):
         self.link_added.emit(link_name, leg_id, part_id)
 
-    def foot_link_added(self, link_name, leg_id, part_idf):
+    def foot_link_added(self, link_name, leg_id, part_id):
         self.link_added.emit(link_name, leg_id, part_id)
 
     def get_prefix(self):
