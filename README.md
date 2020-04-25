@@ -108,14 +108,14 @@ You can either use a URDF file or manually key in the origin of each actuator in
 
     Robot Walking Height - How high shoud be the base from the ground
 
-      ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/gait_parameters.png)
+      ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/gait_parameters.gif)
 
 ## Genrate Config Package
 
   Before you generate the configuration package make sure you have configured all the legs and set the correct gait configurations.
 
 - Click the 'Generate Config' tab and key-in the robot name. 
-- Click the 'Browse' button to choose the directory where you want to save the package. Make sure to select the 'src' folder of your catkin workspace.
+- Click the 'Browse' button to choose the 'src' directory of your current catkin workspace.
 - Click 'Generate' button to create the configuration package.
 
    ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/gen_config.gif)
