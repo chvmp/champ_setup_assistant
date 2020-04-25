@@ -3,7 +3,7 @@
     <arg name="links_map_file"   default="$(find {{ robot_name }}_config)/config/links/links.yaml"/>
     <arg name="gait_config_file" default="$(find {{ robot_name }}_config)/config/gait/gait.yaml"/>
     <arg name="description_file" default="{{ urdf_path }}"/>
-    <arg name="base_frame"       default="{{ links["base"] }}"/>
+    <arg name="base_frame"       default="odom"/>
     <arg name="has_imu"          default="true" />
     <arg name="rviz"             default="false"/>
     <arg name="gazebo"           default="false" />
