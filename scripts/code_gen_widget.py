@@ -108,6 +108,7 @@ class CodeGenWidget(QWidget):
         self.package_gait_config_path = ""
         self.package_include_path = ""
         self.package_launch_path = ""
+        self.package_launch_include_path = ""
         self.package_scripts_path = ""
         self.package_urdf_path = ""
 
@@ -190,7 +191,9 @@ class CodeGenWidget(QWidget):
         self.package_gait_config_path = self.package_path + "/config/gait"
         self.package_include_path = self.package_path + "/include"
         self.package_launch_path = self.package_path + "/launch"
-        self.package_scripts_path = self.package_path + "/scripts"
+        self.package_launch_include_path = self.package_path + "/launch/include"
+        self.package_navigation_config_path = self.package_path + "/config/move_base"
+        self.package_maps_path = self.package_path + "/maps"
         self.package_urdf_path = self.package_path + "/urdf"
 
         try:
@@ -200,7 +203,9 @@ class CodeGenWidget(QWidget):
             os.makedirs(self.package_gait_config_path)
             os.makedirs(self.package_include_path)
             os.makedirs(self.package_launch_path)
-            os.makedirs(self.package_scripts_path)
+            os.makedirs(self.package_launch_include_path)
+            os.makedirs(self.package_maps_path)
+            os.makedirs(self.package_navigation_config_path)
 
             if not self.main.robot_viz.using_urdf:
                 os.makedirs(self.package_urdf_path)
@@ -223,11 +228,17 @@ class CodeGenWidget(QWidget):
             self.generate_configuration_package()
 
     def copy_from_template(self, config):
-        shutil.copy(self.proj_path + '/templates/firmware_utils.py', self.package_scripts_path)
         shutil.copy(self.proj_path + '/templates/hardware_config.h', self.package_include_path)
         shutil.copy(self.proj_path + '/templates/setup.bash', self.package_path)
-
-        os.chmod(self.package_scripts_path + '/firmware_utils.py', 509)
+        shutil.copy(self.proj_path + '/templates/base_local_planner_holonomic_params.yaml', self.package_navigation_config_path)
+        shutil.copy(self.proj_path + '/templates/costmap_common_params.yaml', self.package_navigation_config_path)
+        shutil.copy(self.proj_path + '/templates/global_costmap_params.yaml', self.package_navigation_config_path)
+        shutil.copy(self.proj_path + '/templates/local_costmap_params.yaml', self.package_navigation_config_path)
+        shutil.copy(self.proj_path + '/templates/move_base_params.yaml', self.package_navigation_config_path)
+        shutil.copy(self.proj_path + '/templates/gmapping.launch', self.package_launch_include_path)
+        shutil.copy(self.proj_path + '/templates/amcl.launch', self.package_launch_include_path)
+        shutil.copy(self.proj_path + '/templates/map.pgm', self.package_maps_path)
+        shutil.copy(self.proj_path + '/templates/map.yaml', self.package_maps_path)
 
     def generate_from_template(self, config, template_file, dest):
         template = self.template_env.get_template(template_file)
@@ -268,6 +279,9 @@ class CodeGenWidget(QWidget):
 
             self.generate_from_template(self.config, "CMakeLists.txt", self.package_path)
             self.generate_from_template(self.config, "bringup.launch", self.package_launch_path)
+            self.generate_from_template(self.config, "slam.launch", self.package_launch_path)
+            self.generate_from_template(self.config, "navigate.launch", self.package_launch_path)
+            self.generate_from_template(self.config, "move_base.launch", self.package_launch_include_path)
             self.generate_from_template(self.config["firmware"]["transforms"], "quadruped_description.h", self.package_include_path)
             self.generate_from_template(self.config["firmware"]["gait"], "gait_config.h", self.package_include_path)
             self.generate_from_template(self.config["joints"], "joints.yaml", self.package_joints_map_path)
