@@ -26,7 +26,7 @@ This software auto generates a configuration package containing all the [files](
 
 Configure your robot by loading a URDF or manually key in the configuration parameters. If you don't have any URDF now, you can download [ANYmal](https://github.com/chvmp/anymal_b_simple_description/tree/master/urdf) or [SpotMicro](https://github.com/chvmp/spotmicro_description/blob/master/urdf/spotmicroai.urdf) just to try the package.
 
-## Configuration
+## Leg Configuration
 
 You can either use a URDF file or manually key in the origin of each actuator in the robot.
 
@@ -63,3 +63,59 @@ You can either use a URDF file or manually key in the origin of each actuator in
 
         ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/visualize_links.gif)
 
+
+
+2. Manual Joint Configuration:
+
+   2.1 This step is only required if you don't have a URDF file to use. In this step, you'll define the position of each actuator in your robot to help the controller find the relative position of each joints.
+
+   - Click the 'Left Front Leg' tab and key in the position for each actuator. When defining an actuator's position, x, y, and z refers to:
+
+        x: Translation in the x axis from a reference frame. + x to the front, -x to the back
+
+        y: Translation in the y axis from a reference frame. + y to the left, -y to the right
+
+        z: Translation in the z axis from a reference frame. + z up, -z down
+
+   By reference frame, it means the previous part in this chain: base - hip - upper_leg - lower_leg - foot. For instance if you're defining the position of the actuator at the hip, the reference frame will be 'base' and if youre defining the position of the upper_leg then your reference frame will be 'hip'.  
+
+   You can take a look at the diagram below to gain some intuition. Alway define these positions from a bird's eye view.
+
+   ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/xy_label.png)
+
+   Some axis won't allow you to define in a certain direction if the assistant thinks that it doesn't make sense to define the position towards that direction. For instance, you won't be able to define front right hip's actuator y value as positive as this actuator is always at the right side (-y) of the base.
+
+   Once you're done with the left-front leg, the assistant will somehow predict the rest of the actuators' position. You can click on the rest of the leg tabs to check if the predictions are correct. You can still define the position manually if the prediction is wrong.
+
+## Gait Configuration
+  - Click on the 'Gait Configuration' tab to define the robot's walking parameters.
+
+    Parameters:
+
+    Knee Orientation - How the knees should be bent. You can can configure the robot to follow the following orientation .>> .>< .<< .<> where dot is the front side of the robot.
+
+    Max Linear Velocity X - Robot's maximum forward/reverse speed.
+
+    Max Linear Velocity Y - Robot's maximum speed when moving sideways.
+
+    Max Angular Velocity Z - Robot's maximum rotational speed.
+
+    Stance Duration - How long should each leg spend on the ground while walking. You can set this to default if you're not sure. This can be reconfigured later on.
+
+    Leg Swing Height - Trajectory height during swing phase.
+
+    Leg Stance Height - Trajectory depth during stance phase.
+
+    Robot Walking Height - How high shoud be the base from the ground
+
+      ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/gait_parameters.png)
+
+## Genrate Config Package
+
+  Before you generate the configuration package make sure you have configured all the legs and set the correct gait configurations.
+
+- Click the 'Generate Config' tab and key-in the robot name. 
+- Click the 'Browse' button to choose the directory where you want to save the package. Make sure to select the 'src' folder of your catkin workspace.
+- Click 'Generate' button to create the configuration package.
+
+   ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/gen_config.gif)
