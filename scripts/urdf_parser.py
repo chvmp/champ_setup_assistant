@@ -122,6 +122,9 @@ class URDFParser():
             pos, orientation = self.get_joint_origin(chain[i])
             if orientation == None:
                 orientation = [0,0,0]
+            
+            if pos == None:
+                pos = [0,0,0]
                 
             trans_x += pos[0]
             trans_y += pos[1]
