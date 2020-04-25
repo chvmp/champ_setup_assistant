@@ -176,7 +176,11 @@ class CodeGenWidget(QWidget):
         self.robot_name = self.robot_name.strip()
 
     def browse_button_clicked(self):
-        self.workspace_path = QFileDialog.getExistingDirectory(None, 'Select your ROS src folder:', '', QFileDialog.ShowDirsOnly)
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        options |= QFileDialog.ShowDirsOnly
+
+        self.workspace_path = QFileDialog.getExistingDirectory(self, 'Select your catkin workspace src folder:', '', options=options)
         self.folder_text.setText(self.workspace_path)
 
     def generate_package_folder(self, ws_src):
