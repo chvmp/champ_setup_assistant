@@ -108,7 +108,7 @@ You can either use a URDF file or manually key in the origin of each actuator in
 
     Robot Walking Height - How high shoud be the base from the ground
 
-      ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/gait_parameters.gif)
+      ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/gait_parameters.png)
 
 ## Genrate Config Package
 
