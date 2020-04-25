@@ -86,7 +86,7 @@ class GaitConfiguratorWidget(QWidget):
         self.linear_angular_vel_z_edit.setDecimals(3)
         self.row.addRow(self.linear_angular_vel_z_label, self.linear_angular_vel_z_edit)
 
-        self.stance_duration_label =  QLabel("\tMax Step Length (m)")
+        self.stance_duration_label =  QLabel("\tStance Duration (m)")
         self.stance_duration_label.setFont(QFont("Default", pointSize=9))
         self.stance_duration_edit = QDoubleSpinBox()
         self.stance_duration_edit.setValue(0.250)
