@@ -1,4 +1,4 @@
-# CHAMP Setup Assistant
+# CHAMP Setup Assistant [![Build Status](https://travis-ci.org/chvmp/champ_setup_assistant.svg?branch=master)](https://travis-ci.org/chvmp/champ_setup_assistant) 
 This software auto generates a configuration package containing all the [files](https://github.com/chvmp/champ_setup_assistant/tree/master/templates) necessary to make CHAMP walk. 
 
 ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/setup.png)
@@ -50,7 +50,7 @@ You can either use a URDF file or manually key in the origin of each actuator in
 
         This namespace is the unique identifier used by the URDF's author to differentiate each leg. For instance, Anymal's hip links are named as LF_HIP (front left), LH_HIP (rear left), RF_HIP (right front), RH_HIP (rear right). The assistant will parse the namespaces as LF_, LH_, RF_, and RH_. After selecting the namespaces for all the legs, the assistant will automatically drag the links to its respective leg parts, emptying the left pane.
 
-   3.1.3 Manually adding links (if auto-configuration fails):
+   3.1.3 Manually adding links if auto-configuration in previous step (3.1.2) fails:
 
    - You can also add a link to each leg part manually by clicking on a leg tab (ie 'Left Front Leg'). Select a link on the left pane and click '>' to add. This would be useful if the assistant fails to parse the namespaces.
    
