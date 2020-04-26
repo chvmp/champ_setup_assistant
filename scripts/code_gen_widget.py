@@ -281,6 +281,7 @@ class CodeGenWidget(QWidget):
             self.generate_from_template(self.config, "bringup.launch", self.package_launch_path)
             self.generate_from_template(self.config, "slam.launch", self.package_launch_path)
             self.generate_from_template(self.config, "navigate.launch", self.package_launch_path)
+            self.generate_from_template(self.config, "gazebo.launch", self.package_launch_path)
             self.generate_from_template(self.config, "move_base.launch", self.package_launch_include_path)
             self.generate_from_template(self.config["firmware"]["transforms"], "quadruped_description.h", self.package_include_path)
             self.generate_from_template(self.config["firmware"]["gait"], "gait_config.h", self.package_include_path)
