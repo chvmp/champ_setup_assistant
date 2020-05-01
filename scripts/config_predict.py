@@ -118,12 +118,48 @@ class URDFConfigPredict(QWidget):
         self.link_substrings = ["","","",""]
 
     def get_link_chain(self, ns):
-        link_chain = []
-        for link in self.main.leg_configurator.links_list:
-            if link.count(ns):
-                link_chain.append(link)
-                
-        return link_chain
+        link_name_chain = []
+
+        #using the parsed valid links, get all the links 
+        #in the given namespace
+        for link_name in self.main.leg_configurator.links_list:
+            if link_name.count(ns):
+                link_name_chain.append(link_name)
+
+        #the next line of codes ensure that the links are in 
+        #the correct sequence (from base to foot)
+
+        #get the name of the foot link for this namespace
+        #we need the namespace's foot name to grab the link object
+        namespace_foot_name = ""
+        for foot_name in self.main.robot.foot_links:
+            if foot_name.count(ns):
+                namespace_foot_name = foot_name
+
+        #grab the foot's link object
+        foot_link = None
+        for link in self.main.robot.links:
+            if link.name == namespace_foot_name:
+                foot_link = link 
+
+        #using the foot's link object we can get the chain as a reference
+        link_chain = self.main.robot.get_link_chain(foot_link.name)
+        
+        namespace_link_chain = []
+        #populate the namespace's link chain
+        #this check if any of the link in the chain, matches
+        #the links parsed when loading the urdf
+        for link in link_chain:
+            try:
+                if link_name_chain.index(link) > -1:
+                    namespace_link_chain.append(link)
+            except:
+                pass
+
+        #finally add this namespace's foot name
+        namespace_link_chain.append(foot_name)
+
+        return namespace_link_chain
 
     def on_urdf_path_load(self):
         foot_links = self.main.robot.foot_links
