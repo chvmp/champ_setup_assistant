@@ -155,7 +155,20 @@ class URDFParser():
     def get_joint_origin(self, joint_name):
         for joint in self.joints:
             if joint.name == joint_name:
-                return joint.origin.xyz, joint.origin.rpy
+                xyz = [0,0,0]
+                rpy = [0,0,0]
+
+                try:
+                    xyz = joint.origin.xyz
+                except:
+                    rospy.logwarn("%s's xyz are not defined. Setting these values to zero", joint_name)
+
+                try:
+                    rpy = joint.origin.rpy
+                except:
+                    rospy.logwarn("%s's rpy are not defined. Setting these values to zero", joint_name)
+            
+                return xyz, rpy
     
     def link_has_child(self, link_name):
         return self.robot.child_map.has_key(link_name)
