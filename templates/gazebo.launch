@@ -1,5 +1,6 @@
 <launch>
     <arg name="lite"  default="false" />
+    <arg name="ros_control_file" default="$(find {{ robot_name }}_config)/config/ros_control/ros_control.yaml" />
 
     <include file="$(find {{ robot_name }}_config)/launch/bringup.launch">
         <arg name="gazebo" value="true"/>
@@ -8,5 +9,6 @@
 
     <include file="$(find champ_gazebo)/launch/gazebo.launch">
         <arg name="lite" value="$(arg lite)"/>
+        <arg name="ros_control_file" value="$(arg ros_control_file)"/>
     </include>    
 </launch>

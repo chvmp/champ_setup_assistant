@@ -189,6 +189,7 @@ class CodeGenWidget(QWidget):
         self.package_joints_map_path = self.package_path + "/config/joints"
         self.package_links_map_path = self.package_path + "/config/links"
         self.package_gait_config_path = self.package_path + "/config/gait"
+        self.package_ros_control_path = self.package_path + "/config/ros_control"
         self.package_include_path = self.package_path + "/include"
         self.package_launch_path = self.package_path + "/launch"
         self.package_launch_include_path = self.package_path + "/launch/include"
@@ -201,6 +202,7 @@ class CodeGenWidget(QWidget):
             os.makedirs(self.package_joints_map_path)
             os.makedirs(self.package_links_map_path)
             os.makedirs(self.package_gait_config_path)
+            os.makedirs(self.package_ros_control_path)
             os.makedirs(self.package_include_path)
             os.makedirs(self.package_launch_path)
             os.makedirs(self.package_launch_include_path)
@@ -288,6 +290,7 @@ class CodeGenWidget(QWidget):
             self.generate_from_template(self.config["joints"], "joints.yaml", self.package_joints_map_path)
             self.generate_from_template(self.config["links"], "links.yaml", self.package_links_map_path)
             self.generate_from_template(self.config["firmware"]["gait"], "gait.yaml", self.package_gait_config_path)
+            self.generate_from_template(self.config["joints"], "ros_control.yaml", self.package_ros_control_path)
             self.generate_from_template(self.config, "package.xml", self.package_path)
             self.copy_from_template(self.config)
 

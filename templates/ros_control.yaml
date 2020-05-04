@@ -1,0 +1,35 @@
+champ:
+  joint_states_controller:
+      type: joint_state_controller/JointStateController
+      publish_rate: 25
+
+  joint_group_position_controller:
+      type: effort_controllers/JointTrajectoryController
+      joints:
+          - {{ left_front[0] }}
+          - {{ left_front[1] }}
+          - {{ left_front[2] }}
+          - {{ right_front[0] }}
+          - {{ right_front[1] }}
+          - {{ right_front[2] }}
+          - {{ left_hind[0] }}
+          - {{ left_hind[1] }}
+          - {{ left_hind[2] }}
+          - {{ right_hind[0] }}
+          - {{ right_hind[1] }}
+          - {{ right_hind[2] }}
+
+      gains:
+        {{ left_front[0] }} : {p: 180, d: 0.9, i: 20}
+        {{ left_front[1] }} : {p: 180, d: 0.9, i: 20}
+        {{ left_front[2] }} : {p: 180, d: 0.9, i: 20}
+        {{ right_front[0] }} : {p: 180, d: 0.9, i: 20}
+        {{ right_front[1] }} : {p: 180, d: 0.9, i: 20}
+        {{ right_front[2] }} : {p: 180, d: 0.9, i: 20}
+        {{ left_hind[0] }} : {p: 180, d: 0.9, i: 20}
+        {{ left_hind[1] }} : {p: 180, d: 0.9, i: 20}
+        {{ left_hind[2] }} : {p: 180, d: 0.9, i: 20}
+        {{ right_hind[0] }} : {p: 180, d: 0.9, i: 20}
+        {{ right_hind[1] }} : {p: 180, d: 0.9, i: 20}
+        {{ right_hind[2] }} : {p: 180, d: 0.9, i: 20}
+
