@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '''
-
+import rospkg
 import os
 import json
 from python_qt_binding.QtGui import *
@@ -60,6 +60,7 @@ class FileBrowserWidget(QWidget):
         self.setLayout(self.row)
 
         self.urdf_path = None
+        self.description_path = None
         self.config_path = None
         self.loaded_config = None
         self.file_format = None
@@ -73,6 +74,23 @@ class FileBrowserWidget(QWidget):
             self.load_button.setEnabled(True)
             self.file_text.setText(self.urdf_path)
             self.file_format = "urdf"
+
+            package_name = rospkg.get_package_name(file_path)
+
+            if package_name == None:
+                self.description_path = file_path
+                return
+
+            try:
+                start = file_path.index(package_name) + len(package_name)
+                filename = os.path.basename(file_path)
+                end = file_path.index(filename)
+
+                file_sub_path = file_path[start: end]
+                self.description_path = "$(find %s)%s%s" % (package_name, file_sub_path, filename)
+            except:
+                pass
+
         elif self.config_is_valid(file_path):
             self.config_path = file_path
             self.load_button.setEnabled(True)
@@ -129,5 +147,6 @@ class FileBrowserWidget(QWidget):
             self.load_config_file()
             self.new_config.emit()
 
-        else:    
+        else:   
             self.new_urdf.emit()
+
