@@ -139,17 +139,29 @@ class PackageCreator():
         self.generate_from_template(config, "package.xml", self.package_path)
         self.copy_from_template()
             
+        print("Configuration Generated")
+
 if __name__ == '__main__':
-    if(len(sys.argv) < 2):
+    if len(sys.argv) < 2:
         print("No config package provided")
         sys.exit()
 
     package_path = sys.argv[1]
+    if not os.path.exists(package_path):
+        print("Package path doesn't exist.")
+        sys.exit()
+
+    if package_path[-1] != '/':
+        package_path += '/'
+
     packager = PackageCreator()
     packager.update_package_path(package_path)
 
-    config = None
-    with open(package_path + 'config.json') as json_file:
-        config = json.load(json_file)
+    try:
+        config = None
+        with open(package_path + 'config.json') as json_file:
+            config = json.load(json_file)
 
-    packager.generate_configuration_package(config, package_path)
+        packager.generate_configuration_package(config, package_path)
+    except:
+        print("No config file found. Exiting.")
