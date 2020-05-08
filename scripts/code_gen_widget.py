@@ -28,6 +28,7 @@ import os, sys
 import shutil
 import json
 
+from package_creator import PackageCreator
 from jinja2 import Environment, FileSystemLoader
 from python_qt_binding.QtGui import *
 from python_qt_binding.QtCore import *
@@ -101,16 +102,7 @@ class CodeGenWidget(QWidget):
         self.workspace_path = ""
         self.package_name = ""
         self.robot_name = ""
-
         self.package_path = ""
-        self.package_joints_map_path = ""
-        self.package_links_map_path = ""
-        self.package_gait_config_path = ""
-        self.package_include_path = ""
-        self.package_launch_path = ""
-        self.package_launch_include_path = ""
-        self.package_scripts_path = ""
-        self.package_urdf_path = ""
 
         self.config = {
             "robot_name" : "",
@@ -170,6 +162,7 @@ class CodeGenWidget(QWidget):
             }
         }
 
+        self.packager = PackageCreator()
         self.template_env = Environment(loader = FileSystemLoader(self.proj_path + "/templates"),   trim_blocks=True, lstrip_blocks=True)
 
     def robot_name_edited(self):
@@ -184,40 +177,6 @@ class CodeGenWidget(QWidget):
         self.workspace_path = QFileDialog.getExistingDirectory(self, 'Select your catkin workspace src folder:', '', options=options)
         self.folder_text.setText(self.workspace_path)
 
-    def generate_package_folder(self, ws_src):
-        self.package_path = ws_src + "/" + self.package_name
-        self.package_joints_map_path = self.package_path + "/config/joints"
-        self.package_links_map_path = self.package_path + "/config/links"
-        self.package_gait_config_path = self.package_path + "/config/gait"
-        self.package_ros_control_path = self.package_path + "/config/ros_control"
-        self.package_include_path = self.package_path + "/include"
-        self.package_launch_path = self.package_path + "/launch"
-        self.package_launch_include_path = self.package_path + "/launch/include"
-        self.package_navigation_config_path = self.package_path + "/config/move_base"
-        self.package_maps_path = self.package_path + "/maps"
-        self.package_urdf_path = self.package_path + "/urdf"
-
-        try:
-            os.makedirs(self.package_path)
-            os.makedirs(self.package_joints_map_path)
-            os.makedirs(self.package_links_map_path)
-            os.makedirs(self.package_gait_config_path)
-            os.makedirs(self.package_ros_control_path)
-            os.makedirs(self.package_include_path)
-            os.makedirs(self.package_launch_path)
-            os.makedirs(self.package_launch_include_path)
-            os.makedirs(self.package_maps_path)
-            os.makedirs(self.package_navigation_config_path)
-
-            if not self.main.robot_viz.using_urdf:
-                os.makedirs(self.package_urdf_path)
-
-        except OSError:
-            QMessageBox.information(self, "CONFIG GENERATION FAILED", "Package %s already exists in %s folder" % (self.package_name, self.workspace_path))
-            return False
-        else:
-            return True
-
     def gen_button_clicked(self):
         self.package_name = self.robot_name_edit.text() + "_config"
         if not self.robot_name:
@@ -227,28 +186,7 @@ class CodeGenWidget(QWidget):
             QMessageBox.information(self, "ERROR", "Export folder is empty")
 
         if self.robot_name and self.workspace_path:
-            self.generate_configuration_package()
-
-    def copy_from_template(self, config):
-        shutil.copy(self.proj_path + '/templates/hardware_config.h', self.package_include_path)
-        shutil.copy(self.proj_path + '/templates/setup.bash', self.package_path)
-        shutil.copy(self.proj_path + '/templates/base_local_planner_holonomic_params.yaml', self.package_navigation_config_path)
-        shutil.copy(self.proj_path + '/templates/costmap_common_params.yaml', self.package_navigation_config_path)
-        shutil.copy(self.proj_path + '/templates/global_costmap_params.yaml', self.package_navigation_config_path)
-        shutil.copy(self.proj_path + '/templates/local_costmap_params.yaml', self.package_navigation_config_path)
-        shutil.copy(self.proj_path + '/templates/move_base_params.yaml', self.package_navigation_config_path)
-        shutil.copy(self.proj_path + '/templates/gmapping.launch', self.package_launch_include_path)
-        shutil.copy(self.proj_path + '/templates/amcl.launch', self.package_launch_include_path)
-        shutil.copy(self.proj_path + '/templates/map.pgm', self.package_maps_path)
-        shutil.copy(self.proj_path + '/templates/map.yaml', self.package_maps_path)
-
-    def generate_from_template(self, config, template_file, dest):
-        template = self.template_env.get_template(template_file)
-        content = template.render(config)
-        path = dest + "/" + template_file
-        f = open(path, "w")
-        f.write(content)
-        f.close()
+            self.generate_package()
 
     def save_config(self, config, path):
         path = path + "/" + "config.json"
@@ -257,13 +195,11 @@ class CodeGenWidget(QWidget):
         f.write(content)
         f.close()
 
-    def generate_configuration_package(self):
+    def generate_package(self):
         leg_configuration = self.main.leg_configurator.get_configuration()
         gait_configuration = self.main.gait_configurator.get_configuration()
 
         if leg_configuration != None:
-            self.generate_package_folder(self.workspace_path)
-
             self.config["robot_name"] = self.robot_name
             self.config["links"] = leg_configuration["links"]
             self.config["joints"] = leg_configuration["joints"]
@@ -271,28 +207,15 @@ class CodeGenWidget(QWidget):
             self.config["firmware"]["gait"] = gait_configuration
 
             if self.main.robot_viz.using_urdf:
-                self.config["urdf_path"] = self.main.file_browser.urdf_path
+                self.config["urdf_path"] = self.main.file_browser.description_path
                 self.config["default_urdf"] = "False"
             else:
                 self.config["links"]["base"] = "base_link"
                 self.config["urdf_path"] = "$(find " + self.robot_name + "_config)/urdf/quadruped.urdf"
                 self.config["default_urdf"] = "True"
-                self.generate_from_template(self.config["firmware"]["transforms"], "quadruped.urdf", self.package_urdf_path)
-
-            self.generate_from_template(self.config, "CMakeLists.txt", self.package_path)
-            self.generate_from_template(self.config, "bringup.launch", self.package_launch_path)
-            self.generate_from_template(self.config, "slam.launch", self.package_launch_path)
-            self.generate_from_template(self.config, "navigate.launch", self.package_launch_path)
-            self.generate_from_template(self.config, "gazebo.launch", self.package_launch_path)
-            self.generate_from_template(self.config, "move_base.launch", self.package_launch_include_path)
-            self.generate_from_template(self.config["firmware"]["transforms"], "quadruped_description.h", self.package_include_path)
-            self.generate_from_template(self.config["firmware"]["gait"], "gait_config.h", self.package_include_path)
-            self.generate_from_template(self.config["joints"], "joints.yaml", self.package_joints_map_path)
-            self.generate_from_template(self.config["links"], "links.yaml", self.package_links_map_path)
-            self.generate_from_template(self.config["firmware"]["gait"], "gait.yaml", self.package_gait_config_path)
-            self.generate_from_template(self.config["joints"], "ros_control.yaml", self.package_ros_control_path)
-            self.generate_from_template(self.config, "package.xml", self.package_path)
-            self.copy_from_template(self.config)
+                
+            self.package_path = self.workspace_path + "/" + self.package_name
+            self.packager.generate_configuration_package(self.config, self.package_path)
 
             self.save_config(self.config, self.package_path)
             QMessageBox.information(self, "SUCCESS", "Configuration Package Generated: %s" % self.workspace_path)
