@@ -6,7 +6,7 @@
     <arg name="description_file" default="{{ urdf_path }}"/>
     <arg name="gazebo"           default="false" />
     <arg name="rviz"             default="false"/>
-    <arg name="base_frame"       default="odom"/>
+    <arg name="rviz_ref_frame"       default="odom"/>
     <arg name="has_imu"          default="true" />
     <arg name="lite"             default="false" />
     <arg name="laser"            default="sim"/>
@@ -22,9 +22,9 @@
         <arg name="lite"             value="$(arg lite)"/>
         <arg name="laser"            value="$(arg laser)"/>
         <arg name="rviz"             value="$(arg rviz)"/>
-        <arg name="base_frame"       value="$(arg robot_name)/$(arg base_frame)"/>
+        <arg name="rviz_ref_frame"   value="$(arg robot_name)/$(arg rviz_ref_frame)"/>
     </include>
 
     <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_laser" args="0 0 0 0 0 0 /{{ links["base"] }} /laser" />
-    <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_imu" args="0 0 0 0 0 0 /{{ links["base"] }} /imu_link" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_imu"   args="0 0 0 0 0 0 /{{ links["base"] }} /imu_link" />
 </launch>
