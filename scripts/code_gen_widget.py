@@ -155,6 +155,7 @@ class CodeGenWidget(QWidget):
                     "max_linear_vel_y": 0,
                     "max_angular_vel_z": 0,
                     "stance_duration": 0,
+                    "com_x_translation": 0,
                     "swing_height": 0,
                     "stance_depth": 0,
                     "nominal_height": 0

@@ -86,7 +86,7 @@ class GaitConfiguratorWidget(QWidget):
         self.linear_angular_vel_z_edit.setDecimals(3)
         self.row.addRow(self.linear_angular_vel_z_label, self.linear_angular_vel_z_edit)
 
-        self.stance_duration_label =  QLabel("\tStance Duration (m)")
+        self.stance_duration_label =  QLabel("\tStance Duration (s)")
         self.stance_duration_label.setFont(QFont("Default", pointSize=9))
         self.stance_duration_edit = QDoubleSpinBox()
         self.stance_duration_edit.setValue(0.250)
@@ -122,6 +122,17 @@ class GaitConfiguratorWidget(QWidget):
         self.nominal_height_edit.setDecimals(3)
         self.row.addRow(self.nominal_height_label, self.nominal_height_edit)
 
+        self.com_x_label = QLabel("\tCOM X Translation (m)")
+        self.com_x_label.setFont(QFont("Default", pointSize=9))
+        self.com_x_edit = QDoubleSpinBox()
+        self.com_x_edit.setValue(0.0)
+        self.com_x_edit.setFixedWidth(100)
+        self.com_x_edit.setSingleStep(0.001)
+        self.com_x_edit.setDecimals(3)
+        self.com_x_edit.setMinimum(-1.0)
+
+        self.row.addRow(self.com_x_label, self.com_x_edit)
+
         self.setLayout(self.row)
 
     def get_configuration(self):
@@ -132,6 +143,7 @@ class GaitConfiguratorWidget(QWidget):
             "max_linear_vel_y": 0,
             "max_angular_vel_z": 0,
             "stance_duration": 0,
+            "com_x_translation": 0,
             "swing_height": 0,
             "stance_depth": 0,
             "nominal_height": 0
@@ -142,6 +154,7 @@ class GaitConfiguratorWidget(QWidget):
         gait_config["max_linear_vel_x"] = self.linear_linear_vel_x_edit.value()
         gait_config["max_linear_vel_y"] = self.linear_linear_vel_y_edit.value()
         gait_config["max_angular_vel_z"] = self.linear_angular_vel_z_edit.value()
+        gait_config["com_x_translation"] = self.com_x_edit.value()
         gait_config["stance_duration"] = self.stance_duration_edit.value()
         gait_config["swing_height"] = self.swing_height_edit.value()
         gait_config["stance_depth"] =  self.stance_height_edit.value()
