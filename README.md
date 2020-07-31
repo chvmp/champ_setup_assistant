@@ -110,7 +110,7 @@ Once you're done with the left-front leg, the assistant will somehow predict the
   
   ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/gait_parameters.png)
 
-## 5. Genrate Config Package
+## 5. Generate Config Package
 
   Before you generate the configuration package make sure you have configured all the legs and set the correct gait configurations.
 
