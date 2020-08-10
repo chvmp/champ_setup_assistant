@@ -59,6 +59,15 @@ class GaitConfiguratorWidget(QWidget):
         self.pantograph_leg_edit.setFixedWidth(100)
         self.row.addRow(self.pantograph_leg_label, self.pantograph_leg_edit)
 
+        self.odom_scaler_label =  QLabel("\tOdometry Velocity Scaler")
+        self.odom_scaler_label.setFont(QFont("Default", pointSize=9))
+        self.odom_scaler_edit = QDoubleSpinBox()
+        self.odom_scaler_edit.setValue(1.0)
+        self.odom_scaler_edit.setFixedWidth(100)
+        self.odom_scaler_edit.setSingleStep(0.001)
+        self.odom_scaler_edit.setDecimals(3)
+        self.row.addRow(self.odom_scaler_label, self.odom_scaler_edit)
+
         self.linear_linear_vel_x_label =  QLabel("\tMax Linear Velocity, X Axis (m/s)")
         self.linear_linear_vel_x_label.setFont(QFont("Default", pointSize=9))
         self.linear_linear_vel_x_edit = QDoubleSpinBox()
@@ -138,6 +147,7 @@ class GaitConfiguratorWidget(QWidget):
     def get_configuration(self):
         gait_config = {
             "knee_orientation": ">>",
+            "odom_scaler": 0,
             "max_linear_vel_x": "false",
             "max_linear_vel_x": 0,
             "max_linear_vel_y": 0,
@@ -151,6 +161,7 @@ class GaitConfiguratorWidget(QWidget):
 
         gait_config["knee_orientation"] = str(self.knee_orientation_edit.currentText())
         gait_config["pantograph_leg"] = str(self.pantograph_leg_edit.currentText())
+        gait_config["odom_scaler"] = self.odom_scaler_edit.value()
         gait_config["max_linear_vel_x"] = self.linear_linear_vel_x_edit.value()
         gait_config["max_linear_vel_y"] = self.linear_linear_vel_y_edit.value()
         gait_config["max_angular_vel_z"] = self.linear_angular_vel_z_edit.value()

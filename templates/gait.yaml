@@ -1,5 +1,6 @@
 knee_orientation : "{{ knee_orientation }}"
 pantograph_leg : {{ pantograph_leg }}
+odom_scaler: {{ odom_scaler }}
 max_linear_velocity_x : {{ max_linear_vel_x }}
 max_linear_velocity_y : {{ max_linear_vel_y }}
 max_angular_velocity_z : {{ max_angular_vel_z }}

@@ -3,6 +3,7 @@
 
 #define KNEE_ORIENTATION        "{{ knee_orientation }}"
 #define PANTOGRAPH_LEG          {{ pantograph_leg }}
+#define ODOM_SCALER             {{ odom_scaler }}
 #define MAX_LINEAR_VELOCITY_X   {{ max_linear_vel_x }}
 #define MAX_LINEAR_VELOCITY_Y   {{ max_linear_vel_y }}
 #define MAX_ANGULAR_VELOCITY_Z  {{ max_angular_vel_z }}
