@@ -92,21 +92,25 @@ Once you're done with the left-front leg, the assistant will somehow predict the
 
   Parameters:
   
-  **Knee Orientation** - How the knees should be bent. You can can configure the robot to follow the following orientation .>> .>< .<< .<> where dot is the front side of the robot.
+**Knee Orientation** - How the knees should be bent. You can can configure the robot to follow the following orientation .>> .>< .<< .<> where dot is the front side of the robot.
 
-  **Max Linear Velocity X**- Robot's maximum forward/reverse speed.
+  **Max Linear Velocity X** (meters/second) - Robot's maximum forward/reverse speed.
 
-  **Max Linear Velocity Y** - Robot's maximum speed when moving sideways.
+  **Max Linear Velocity Y** (meteres/second) - Robot's maximum speed when moving sideways.
 
-  **Max Angular Velocity Z** - Robot's maximum rotational speed.
+  **Max Angular Velocity Z** (radians/second)- Robot's maximum rotational speed.
 
-  **Stance Duration** - How long should each leg spend on the ground while walking. You can set this to default if you're not sure. This can be reconfigured later on.
+  **Stance Duration** (seconds)- How long should each leg spend on the ground while walking. You can set this to default(0.25) if you're not sure. The higher the stance duration the further the displacement is from the reference point.
 
-  **Leg Swing Height** - Trajectory height during swing phase.
+  **Leg Swing Height** (meters)- Trajectory height during swing phase.
 
-  **Leg Stance Height** - Trajectory depth during stance phase.
+  **Leg Stance Height** (meters)- Trajectory depth during stance phase.
 
-  **Robot Walking Height*** - How high shoud be the base from the ground
+  **Robot Walking Height** (meters) - Distance from hip to the ground while walking.
+
+  **COM X Translation** (meters) - You can use this parameter to move the reference point in the X axis. This is useful when you want to compensate for the weight if the center of mass is not in the middle of the robot (from front hip to rear hip). For instance, if you find that the robot is heavier at the back, you'll set a negative value to shift the reference point to the back.
+
+  **Odometry Scaler** - You can use this parameter as a multiplier to the calculated velocities for dead reckoning. This can be useful to compensate odometry errors on open-loop systems. Normally this value ranges from 1.0 to 1.20.
   
   ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/gait_parameters.png)
 
