@@ -92,7 +92,7 @@ Once you're done with the left-front leg, the assistant will somehow predict the
 
   Parameters:
   
-**Knee Orientation** - How the knees should be bent. You can can configure the robot to follow the following orientation .>> .>< .<< .<> where dot is the front side of the robot.
+  **Knee Orientation** - How the knees should be bent. You can can configure the robot to follow the following orientation .>> .>< .<< .<> where dot is the front side of the robot.
 
   **Max Linear Velocity X** (meters/second) - Robot's maximum forward/reverse speed.
 
@@ -106,7 +106,7 @@ Once you're done with the left-front leg, the assistant will somehow predict the
 
   **Leg Stance Height** (meters)- Trajectory depth during stance phase.
 
-  **Robot Walking Height** (meters) - Distance from hip to the ground while walking.
+  **Robot Walking Height** (meters) - Distance from hip to the ground while walking. Take note that setting this parameter too high can get your robot unstable.
 
   **COM X Translation** (meters) - You can use this parameter to move the reference point in the X axis. This is useful when you want to compensate for the weight if the center of mass is not in the middle of the robot (from front hip to rear hip). For instance, if you find that the robot is heavier at the back, you'll set a negative value to shift the reference point to the back.
 
