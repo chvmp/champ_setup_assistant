@@ -42,6 +42,7 @@ You can either use a URDF file or manually key in the origin of each actuator in
 
 You can use the image below as a reference.
 
+AXES: +X: Red, +Y: Green, +Z: Blue 
   ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/urdf_reference.png)
 
 3.1.2 Load the URDF file:
