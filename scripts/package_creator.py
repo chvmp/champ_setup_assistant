@@ -40,7 +40,7 @@ except ImportError:
 import rospkg
 
 class PackageCreator():
-    def __init__(self):
+    def __init__(self, update=False):
         self.proj_path = rospkg.RosPack().get_path('champ_setup_assistant')
 
         self.package_path = ""
@@ -89,7 +89,7 @@ class PackageCreator():
         if using_urdf:
             self.create_dir(self.package_urdf_path)
 
-    def copy_from_template(self):
+    def copy_from_template(self, update=False):
         shutil.copy(self.proj_path + '/templates/hardware_config.h', self.package_include_path)
         shutil.copy(self.proj_path + '/templates/setup.bash', self.package_path)
         shutil.copy(self.proj_path + '/templates/base_local_planner_holonomic_params.yaml', self.package_navigation_config_path)
@@ -117,12 +117,17 @@ class PackageCreator():
         f.write(content)
         f.close()
 
-    def generate_configuration_package(self, config, package_path):
+    def generate_configuration_package(self, config, package_path, update=False):
         self.update_package_path(package_path)
         self.generate_package_folder(strtobool(config["default_urdf"]))
 
         if strtobool(config["default_urdf"]):
             self.generate_from_template(config["firmware"]["transforms"], "quadruped.urdf", self.package_urdf_path)
+        
+        if not update:
+            self.generate_from_template(config["joints"], "ros_control.yaml", self.package_ros_control_path)
+            self.generate_from_template(config["firmware"]["gait"], "gait_config.h", self.package_include_path)
+            self.generate_from_template(config["firmware"]["gait"], "gait.yaml", self.package_gait_config_path)
 
         self.generate_from_template(config, "CMakeLists.txt", self.package_path)
         self.generate_from_template(config, "bringup.launch", self.package_launch_path)
@@ -131,13 +136,12 @@ class PackageCreator():
         self.generate_from_template(config, "gazebo.launch", self.package_launch_path)
         self.generate_from_template(config, "move_base.launch", self.package_launch_include_path)
         self.generate_from_template(config["firmware"]["transforms"], "quadruped_description.h", self.package_include_path)
-        self.generate_from_template(config["firmware"]["gait"], "gait_config.h", self.package_include_path)
         self.generate_from_template(config["joints"], "joints.yaml", self.package_joints_map_path)
         self.generate_from_template(config["links"], "links.yaml", self.package_links_map_path)
-        self.generate_from_template(config["firmware"]["gait"], "gait.yaml", self.package_gait_config_path)
-        self.generate_from_template(config["joints"], "ros_control.yaml", self.package_ros_control_path)
         self.generate_from_template(config, "package.xml", self.package_path)
-        self.copy_from_template()
+        
+
+        self.copy_from_template(update=update)
             
         print("Configuration Generated")
 
@@ -162,6 +166,6 @@ if __name__ == '__main__':
         with open(package_path + 'config.json') as json_file:
             config = json.load(json_file)
 
-        packager.generate_configuration_package(config, package_path)
+        packager.generate_configuration_package(config, package_path, update=True)
     except:
         print("No config file found. Exiting.")
