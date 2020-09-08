@@ -30,5 +30,6 @@ endif()
  
 install(PROGRAMS
   scripts/setup_assistant.py
+  scripts/package_creator.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
