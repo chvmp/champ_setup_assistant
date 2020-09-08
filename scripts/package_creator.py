@@ -90,9 +90,11 @@ class PackageCreator():
             self.create_dir(self.package_urdf_path)
 
     def copy_from_template(self, update=False):
+        if not update:
+            shutil.copy(self.proj_path + '/templates/base_local_planner_holonomic_params.yaml', self.package_navigation_config_path)
+
         shutil.copy(self.proj_path + '/templates/hardware_config.h', self.package_include_path)
         shutil.copy(self.proj_path + '/templates/setup.bash', self.package_path)
-        shutil.copy(self.proj_path + '/templates/base_local_planner_holonomic_params.yaml', self.package_navigation_config_path)
         shutil.copy(self.proj_path + '/templates/costmap_common_params.yaml', self.package_navigation_config_path)
         shutil.copy(self.proj_path + '/templates/global_costmap_params.yaml', self.package_navigation_config_path)
         shutil.copy(self.proj_path + '/templates/local_costmap_params.yaml', self.package_navigation_config_path)
