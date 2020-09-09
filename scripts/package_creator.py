@@ -130,7 +130,8 @@ class PackageCreator():
             self.generate_from_template(config["joints"], "ros_control.yaml", self.package_ros_control_path)
             self.generate_from_template(config["firmware"]["gait"], "gait_config.h", self.package_include_path)
             self.generate_from_template(config["firmware"]["gait"], "gait.yaml", self.package_gait_config_path)
-
+        
+        self.generate_from_template(config, "README.md", self.package_path)
         self.generate_from_template(config, "CMakeLists.txt", self.package_path)
         self.generate_from_template(config, "bringup.launch", self.package_launch_path)
         self.generate_from_template(config, "slam.launch", self.package_launch_path)
@@ -142,7 +143,6 @@ class PackageCreator():
         self.generate_from_template(config["links"], "links.yaml", self.package_links_map_path)
         self.generate_from_template(config, "package.xml", self.package_path)
         
-
         self.copy_from_template(update=update)
             
         print("Configuration Generated")
