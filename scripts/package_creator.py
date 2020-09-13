@@ -52,6 +52,7 @@ class PackageCreator():
         self.package_launch_include_path = ""
         self.package_scripts_path = ""
         self.package_urdf_path = ""
+        self.package_worlds_path = ""
 
         self.template_env = Environment(loader = FileSystemLoader(self.proj_path + "/templates"),   trim_blocks=True, lstrip_blocks=True)
 
@@ -67,6 +68,7 @@ class PackageCreator():
         self.package_navigation_config_path = self.package_path + "/config/move_base"
         self.package_maps_path = self.package_path + "/maps"
         self.package_urdf_path = self.package_path + "/urdf"
+        self.package_worlds_path = self.package_path + "/worlds"
 
     def create_dir(self, path):
         try:
@@ -85,6 +87,7 @@ class PackageCreator():
         self.create_dir(self.package_launch_include_path)
         self.create_dir(self.package_maps_path)
         self.create_dir(self.package_navigation_config_path)
+        self.create_dir(self.package_worlds_path)
 
         if using_urdf:
             self.create_dir(self.package_urdf_path)
@@ -103,6 +106,8 @@ class PackageCreator():
         shutil.copy(self.proj_path + '/templates/amcl.launch', self.package_launch_include_path)
         shutil.copy(self.proj_path + '/templates/map.pgm', self.package_maps_path)
         shutil.copy(self.proj_path + '/templates/map.yaml', self.package_maps_path)
+        shutil.copy(self.proj_path + '/templates/outdoor.world', self.package_worlds_path)
+        shutil.copy(self.proj_path + '/templates/default.world', self.package_worlds_path)
 
     def generate_from_template(self, config, template_file, dest):
         template = self.template_env.get_template(template_file)
