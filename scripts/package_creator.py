@@ -142,6 +142,7 @@ class PackageCreator():
         self.generate_from_template(config, "slam.launch", self.package_launch_path)
         self.generate_from_template(config, "navigate.launch", self.package_launch_path)
         self.generate_from_template(config, "gazebo.launch", self.package_launch_path)
+        self.generate_from_template(config, "spawn_robot.launch", self.package_launch_path)
         self.generate_from_template(config, "move_base.launch", self.package_launch_include_path)
         self.generate_from_template(config["firmware"]["transforms"], "quadruped_description.h", self.package_include_path)
         self.generate_from_template(config["joints"], "joints.yaml", self.package_joints_map_path)
