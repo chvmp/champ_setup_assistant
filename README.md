@@ -34,11 +34,12 @@ You can either use a URDF file or manually key in the origin of each actuator in
 
  3.1.1 The following assumptions have been made to avoid fragmentation across different robots as there can be thousands of ways to create a robot's URDF. You need to modify your URDF if any of these assumptions are not met:
 
+- There are no rotation between frames (joint's origin-rpy are all set to zero).
 - Hip joints rotate in the X axis.
 - Upper Leg joints rotate in the Y axis.
 - Lower Leg joints rotate in the Y axis.
-- Origins of actuators' meshes are located in the center of rotation.
-- All joints at zero position will results the robot's legs to be fully stretched towards the ground. From frontal and sagittal view, all legs should be perpendicular to the ground. This can be achieved by setting all joint's origin-rpy to zero.
+- Origins of actuators' meshes are located at the center of rotation.
+- All joints at zero position will results the robot's legs to be fully stretched towards the ground. From frontal and sagittal view, all legs should be perpendicular to the ground.
 
 You can use the image below as a reference.
 
