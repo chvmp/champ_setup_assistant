@@ -32,7 +32,6 @@ try:
 except ImportError:
     pass
 
-# import rviz
 from rviz import bindings as rviz
 import roslaunch
 
