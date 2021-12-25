@@ -8,7 +8,7 @@ This software auto generates a configuration package containing all the [files](
 
         sudo apt install -y python-rosdep
         cd <your_ws>/src
-        git clone https://github.com/chvmp/champ_setup_assistant
+        git clone -b noetic https://github.com/chvmp/champ_setup_assistant
         git clone https://github.com/chvmp/robot_state_plugin
         cd ..
         rosdep install --from-paths src --ignore-src -r -y
