@@ -67,14 +67,14 @@ AXES: +X: Red, +Y: Green, +Z: Blue
 
 - You can also add a link to each leg part manually by clicking on a leg tab (ie 'Left Front Leg'). Select a link on the left pane and click '>' to add. This would be useful if the assistant fails to parse the namespaces.
    
-        ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/manual_urdf.gif)
+  ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/manual_urdf.gif)
 
 
 3.1.5 Verify the configuration:
 
 - To visualize a configured link for a leg part, click on one of the leg tabs (ie 'Left Front Leg') and select the part. The link should now be highlighted on the RVIZ widget. Check all the leg tabs if the configuration is correct.
 
-        ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/visualize_links.gif)
+  ![CHAMP Setup Assistant](https://raw.githubusercontent.com/chvmp/champ_setup_assistant/master/docs/images/visualize_links.gif)
 
 
 ### 3.2. Manual Joint Configuration:
